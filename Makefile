@@ -17,8 +17,7 @@ OBJECTS := $(patsubst %.cpp, %.o, $(SOURCES))
 .PHONY: all zip clean
 
 all: $(OBJECTS)
-	-@rm $(LIBFILE)
-	ar -rcs $(LIBFILE) $(OBJECTS)
+	ar rcs $(LIBFILE) $(OBJECTS)
 
 $(OBJECTS): $(SOURCEDIR)/%.o : $(SOURCEDIR)/%.cpp
 	$(CC) $(CFLAGS) $(LIBS) -c $< -o $@
