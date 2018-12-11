@@ -19,7 +19,7 @@
 #endif
 
 //32 - 126
-const char* const ascii_map[] = {
+static const char* const ascii_map[] = {
 	_c20, _c21, _c22, _c23, _c24, _c25, _c26, _c27, _c28, _c29, _c2a, _c2b, _c2c, _c2d, _c2e, _c2f,
 	_c30, _c31, _c32, _c33, _c34, _c35, _c36, _c37, _c38, _c39, _c3a, _c3b, _c3c, _c3d, _c3e, _c3f,
 	_c40, _c41, _c42, _c43, _c44, _c45, _c46, _c47, _c48, _c49, _c4a, _c4b, _c4c, _c4d, _c4e, _c4f,
@@ -28,12 +28,14 @@ const char* const ascii_map[] = {
 	_c70, _c71, _c72, _c73, _c74, _c75, _c76, _c77, _c78, _c79, _c7a, _c7b, _c7c, _c7d, _c7e, INVALID_CHAR,
 };
 
-const char *chmap_getch(char c)
+static const char *chmap_getch(char c)
 {
 	if(c < 0x20 || c > 0x7e)
 		return INVALID_CHAR;
 	return ascii_map[c - 32];
 }
+
+namespace Charmap {
 
 void chmap_buildframe(struct cubeframe *fr, const char *ascii)
 {
@@ -187,5 +189,7 @@ void chmap_scrolltext(const struct cubeframe *frames, size_t count, uint8_t dire
 		}
 	}
 }
+
+} //namespace Charmap
 
 #endif //CHMAP_WIDTH == CUBE_WIDTH
