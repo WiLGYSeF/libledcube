@@ -2,16 +2,66 @@
 #include <string.h>
 #include "pattern.h"
 
-struct voxel_list {
+class VoxelList
+{
+private:
 	cubecol cols[CUBE_WIDTH][CUBE_AREA];
 	cubecol colsz[CUBE_WIDTH];
 	uint8_t levels[CUBE_WIDTH];
 	uint8_t levelsz;
-};
 
-void vl_init(struct voxel_list *vl);
-uint32_t vl_pop_voxel(struct voxel_list *vl);
-int vl_empty(struct voxel_list *vl);
+public:
+	VoxelList()
+	{
+		this->levelsz = CUBE_WIDTH;
+
+		for (cubecol i = 0; i < CUBE_AREA; i++)
+			this->cols[0][i] = i;
+		this->levels[0] = 0;
+		this->colsz[0] = CUBE_AREA;
+
+		for (uint8_t y = 1; y < CUBE_WIDTH; y++)
+		{
+			memcpy(this->cols[y], this->cols[0], sizeof(this->cols[0]));
+			this->levels[y] = y;
+			this->colsz[y] = CUBE_AREA;
+		}
+	}
+
+	//pops a random voxel from the list of all voxels, non-replacement
+	//returns (x << 16) | (y << 8) | z
+	uint32_t pop_random_voxel()
+	{
+		if(this->isempty())
+			return -1;
+
+		uint8_t yidx = rand() % this->levelsz;
+		cubecol cidx = rand() % this->colsz[yidx];
+
+		cubecol col = this->cols[yidx][cidx];
+		uint32_t r = ((col % CUBE_WIDTH) << 16) | (this->levels[yidx] << 8) | (col / CUBE_WIDTH);
+
+		this->cols[yidx][cidx] = this->cols[yidx][--this->colsz[yidx]];
+
+		if(!this->colsz[yidx])
+		{
+			this->levelsz--;
+			if(yidx != this->levelsz)
+			{
+				this->levels[yidx] = this->levels[this->levelsz];
+				this->colsz[yidx] = this->colsz[this->levelsz];
+				memcpy(this->cols[yidx], this->cols[this->levelsz], this->colsz[yidx] * sizeof(cubecol));
+			}
+		}
+
+		return r;
+	}
+
+	int isempty()
+	{
+		return !this->levelsz;
+	}
+};
 
 namespace Pattern {
 
@@ -84,8 +134,7 @@ void random(struct cubeframe *fr)
 
 void random_modify(struct cubeframe *fr, struct cubeframe *ref, size_t count)
 {
-	struct voxel_list vl;
-	vl_init(&vl);
+	VoxelList vl;
 
 	if(count > CUBE_VOLUME)
 		count = CUBE_VOLUME - 1;
@@ -95,7 +144,7 @@ void random_modify(struct cubeframe *fr, struct cubeframe *ref, size_t count)
 
 	while(count)
 	{
-		p = vl_pop_voxel(&vl);
+		p = vl.pop_random_voxel();
 		x = (p >> 16) & 255;
 		y = (p >> 8) & 255;
 		z = p & 255;
@@ -116,7 +165,7 @@ void border_bounce(size_t count, uint16_t delay)
 	uint8_t end = CUBE_WIDTH;
 
 	cm_set(&fr, 0);
-	pat_border(&fr, 1, start);
+	Pattern::border(&fr, 1, start);
 	cm_draw_frame(&fr);
 	start += 2;
 
@@ -130,7 +179,7 @@ void border_bounce(size_t count, uint16_t delay)
 		#endif
 
 			cm_set(&fr, 0);
-			pat_border(&fr, 1, w);
+			Pattern::border(&fr, 1, w);
 			cm_draw_frame(&fr);
 		}
 
@@ -142,7 +191,7 @@ void border_bounce(size_t count, uint16_t delay)
 		#endif
 
 			cm_set(&fr, 0);
-			pat_border(&fr, 1, w);
+			Pattern::border(&fr, 1, w);
 			cm_draw_frame(&fr);
 
 			if(w <= 2)
@@ -424,20 +473,19 @@ void random_set(uint8_t led_on, uint16_t delay)
 	cm_set(&fr, !led_on);
 	fr.delay = delay;
 
-	struct voxel_list vl;
-	vl_init(&vl);
+	VoxelList vl;
 
 	uint32_t p;
 	uint8_t x, y, z;
 
-	while(!vl_empty(&vl))
+	while(!vl.isempty())
 	{
 	#ifdef PATTERN_KILLFLAG
 		if(g_patternKillFlag)
 			return;
 	#endif
 
-		p = vl_pop_voxel(&vl);
+		p = vl.pop_random_voxel();
 		x = (p >> 16) & 255;
 		y = (p >> 8) & 255;
 		z = p & 255;
@@ -672,50 +720,3 @@ void stream(uint8_t axdir, size_t count, size_t spacing, uint16_t delay)
 }
 
 } //namespace Pattern
-
-void vl_init(struct voxel_list *vl)
-{
-	vl->levelsz = CUBE_WIDTH;
-
-	for (cubecol i = 0; i < CUBE_AREA; i++)
-		vl->cols[0][i] = i;
-	vl->levels[0] = 0;
-	vl->colsz[0] = CUBE_AREA;
-
-	for (uint8_t y = 1; y < CUBE_WIDTH; y++)
-	{
-		memcpy(vl->cols[y], vl->cols[0], sizeof(vl->cols[0]));
-		vl->levels[y] = y;
-		vl->colsz[y] = CUBE_AREA;
-	}
-}
-
-//returns (x << 16) | (y << 8) | z
-uint32_t vl_pop_voxel(struct voxel_list *vl)
-{
-	uint8_t yidx = rand() % vl->levelsz;
-	cubecol cidx = rand() % vl->colsz[yidx];
-
-	cubecol col = vl->cols[yidx][cidx];
-	uint32_t r = ((col % CUBE_WIDTH) << 16) | (vl->levels[yidx] << 8) | (col / CUBE_WIDTH);
-
-	vl->cols[yidx][cidx] = vl->cols[yidx][--vl->colsz[yidx]];
-
-	if(!vl->colsz[yidx])
-	{
-		vl->levelsz--;
-		if(yidx != vl->levelsz)
-		{
-			vl->levels[yidx] = vl->levels[vl->levelsz];
-			vl->colsz[yidx] = vl->colsz[vl->levelsz];
-			memcpy(vl->cols[yidx], vl->cols[vl->levelsz], vl->colsz[yidx] * sizeof(cubecol));
-		}
-	}
-
-	return r;
-}
-
-int vl_empty(struct voxel_list *vl)
-{
-	return !vl->levelsz;
-}
