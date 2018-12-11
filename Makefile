@@ -2,8 +2,11 @@ CC := g++
 CFLAGS := -Wall -Wextra -Wcast-align -Wfloat-equal -Wpointer-arith -Wshadow -Wundef -O2 -fstack-protector -DCUBE_WIDTH=5 -DTEST_NOTEENSY
 LIBS :=
 
+LIBNAME := ledcube
+LIBFILE := lib$(LIBNAME).a
+
 ZIP := zip
-ZIPOUT := libledcube.zip
+ZIPFILE := libledcube.zip
 
 SOURCEDIR := .
 
@@ -14,14 +17,16 @@ OBJECTS := $(patsubst %.cpp, %.o, $(SOURCES))
 .PHONY: all zip clean
 
 all: $(OBJECTS)
-	$(CC) $(CFLAGS) -o $(EXENAME) $(OBJECTS) $(LIBS)
+	-@rm $(LIBFILE)
+	ar -rcs $(LIBFILE) $(OBJECTS)
 
 $(OBJECTS): $(SOURCEDIR)/%.o : $(SOURCEDIR)/%.cpp
 	$(CC) $(CFLAGS) $(LIBS) -c $< -o $@
 
 zip:
-	$(ZIP) $(ZIPOUT) $(SOURCES) $(HEADERS) readme.txt
+	$(ZIP) $(ZIPFILE) $(SOURCES) $(HEADERS) examples/* keywords.txt readme.txt
 
 clean:
-	@rm $(OBJECTS)
-	@rm $(ZIPOUT)
+	-@rm $(OBJECTS)
+	-@rm $(ZIPFILE)
+	-@rm $(LIBFILE)
