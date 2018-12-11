@@ -155,6 +155,9 @@ namespace ledcube
 #ifdef PATTERN_KILLFLAG
 	extern volatile int g_patternKillFlag;
 #endif
+#ifdef TEST_NOTEENSY
+	extern int g_verboseprint;
+#endif
 }
 
 #endif //ndef __CUBEMAP_H

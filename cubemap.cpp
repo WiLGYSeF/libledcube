@@ -9,6 +9,8 @@
 	#include <SPI.h>
 #endif
 
+static const char *hex = "0123456789abcdef";
+static const char *base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 namespace ledcube {
 
@@ -17,6 +19,9 @@ namespace ledcube {
 #endif
 #ifdef PATTERN_KILLFLAG
 	volatile int g_patternKillFlag = 0;
+#endif
+#ifdef TEST_NOTEENSY
+	int g_verboseprint = 0;
 #endif
 
 Cubeframe::Cubeframe()
@@ -444,8 +449,85 @@ void Cubeframe::print_plane(const cubelvl plane, uint8_t multilevel)
 
 void Cubeframe::print_frame() const
 {
+	if(g_verboseprint && CUBE_WIDTH <= 64)
+	{
+		putchar(' ');
+		putchar(' ');
+
+		for (uint8_t z = 0; z < CUBE_WIDTH; z++)
+		{
+			if(CUBE_WIDTH <= 16)
+			{
+				putchar(hex[z]);
+			}else
+			if(CUBE_WIDTH <= 64)
+			{
+				putchar(base64[z]);
+			}
+
+			for (uint8_t w = 0; w < CUBE_WIDTH; w++)
+				putchar(' ');
+		}
+
+		putchar('z');
+		putchar('\n');
+
+		putchar('y');
+		putchar('\n');
+	}
+
 	for (uint8_t y = 0; y < CUBE_WIDTH; y++)
+	{
+		if(g_verboseprint)
+		{
+			if(CUBE_WIDTH <= 16)
+			{
+				putchar(hex[y]);
+			}else
+			if(CUBE_WIDTH <= 64)
+			{
+				putchar(base64[y]);
+			}else
+			{
+				putchar(' ');
+			}
+
+			putchar(' ');
+		}
+
 		Cubeframe::print_plane(this->levels[y], 1);
+	}
+	putchar('\n');
+
+	if(g_verboseprint && CUBE_WIDTH <= 64)
+	{
+		putchar(' ');
+		putchar(' ');
+
+		for (uint8_t z = 0; z < CUBE_WIDTH; z++)
+		{
+			for (uint8_t x = 0; x < CUBE_WIDTH; x++)
+			{
+				if(CUBE_WIDTH <= 16)
+				{
+					putchar(hex[x]);
+				}else
+				if(CUBE_WIDTH <= 64)
+				{
+					putchar(base64[x]);
+				}else
+				{
+					putchar(' ');
+				}
+			}
+
+			putchar(' ');
+		}
+
+		putchar('x');
+	}
+
+	putchar('\n');
 	putchar('\n');
 }
 
