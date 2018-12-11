@@ -39,17 +39,17 @@ namespace ledcube {
 
 namespace charmap {
 
-void buildframe(struct cubeframe *fr, const char *ascii)
+void buildframe(Cubeframe &fr, const char *ascii)
 {
 	for (uint8_t y = 0; y < CUBE_WIDTH; y++)
 	{
-		cm_set_level(fr, 0, y);
+		fr.set_level(0, y);
 		for (uint8_t x = 0; x < CUBE_WIDTH; x++)
-			cm_set_voxel(fr, *(ascii + y * CUBE_WIDTH + x) == CM_ON, x, y, 0);
+			fr.set_voxel(*(ascii + y * CUBE_WIDTH + x) == CM_ON, x, y, 0);
 	}
 }
 
-struct cubeframe *buildstr(const char *str, size_t *count, uint16_t delay)
+Cubeframe *buildstr(const char *str, size_t *count, uint16_t delay)
 {
 	*count = 0;
 
@@ -62,14 +62,16 @@ struct cubeframe *buildstr(const char *str, size_t *count, uint16_t delay)
 	if(!*count)
 		return NULL;
 
+/*
 	struct cubeframe *frames = (struct cubeframe*)malloc(*count * sizeof(struct cubeframe));
 	if(!frames)
 	{
 		*count = -1;
 		return NULL;
 	}
-
-	struct cubeframe *curframe = frames;
+*/
+	Cubeframe *frames = new Cubeframe[*count];
+	Cubeframe *curframe = frames;
 
 	for (const char *p = str; *p; p++)
 	{
@@ -77,7 +79,7 @@ struct cubeframe *buildstr(const char *str, size_t *count, uint16_t delay)
 		if(!c)
 			continue;
 
-		buildframe(curframe, c);
+		buildframe(*curframe, c);
 		curframe->delay = delay;
 		curframe++;
 	}
@@ -85,17 +87,17 @@ struct cubeframe *buildstr(const char *str, size_t *count, uint16_t delay)
 	return frames;
 }
 
-void scrolltext(const struct cubeframe *frames, size_t count, uint8_t direction, size_t spacing)
+void scrolltext(const Cubeframe *frames, size_t count, uint8_t direction, size_t spacing)
 {
-	const struct cubeframe *fr = frames;
-	const struct cubeframe *next = frames + 1;
-	struct cubeframe cur;
-	struct cubeframe empty;
+	const Cubeframe *fr = frames;
+	const Cubeframe *next = frames + 1;
+	Cubeframe cur;
+	Cubeframe empty;
 
-	memcpy(&cur, fr, sizeof(struct cubeframe));
-	cm_set(&empty, 0);
+	cur = *fr;
+	empty.set(0);
 
-	cm_draw_frame(&cur);
+	cur.draw_frame();
 
 	size_t spoff = CUBE_WIDTH + spacing;
 	uint8_t off;
@@ -124,30 +126,30 @@ void scrolltext(const struct cubeframe *frames, size_t count, uint8_t direction,
 					if(direction == DIR_UP)
 					{
 						for (uint8_t y = 1; y < CUBE_WIDTH; y++)
-							cm_set_voxel(&cur, cm_get_voxel(&cur, x, y, 0), x, y - 1, 0);
+							cur.set_voxel(cur.get_voxel(x, y, 0), x, y - 1, 0);
 
 						if(s < spacing)
 						{
-							cm_set_voxel(&cur, 0, x, CUBE_WIDTH - 1, 0);
+							cur.set_voxel(0, x, CUBE_WIDTH - 1, 0);
 						}else
 						{
-							cm_set_voxel(&cur, cm_get_voxel(next, x, off, 0), x, CUBE_WIDTH - 1, 0);
+							cur.set_voxel(next->get_voxel(x, off, 0), x, CUBE_WIDTH - 1, 0);
 						}
 					}else
 					{
 						for (uint8_t y = CUBE_WIDTH - 2; ; y--)
 						{
-							cm_set_voxel(&cur, cm_get_voxel(&cur, x, y, 0), x, y + 1, 0);
+							cur.set_voxel(cur.get_voxel(x, y, 0), x, y + 1, 0);
 							if(!y)
 								break;
 						}
 
 						if(s < spacing)
 						{
-							cm_set_voxel(&cur, 0, x, 0, 0);
+							cur.set_voxel(0, x, 0, 0);
 						}else
 						{
-							cm_set_voxel(&cur, cm_get_voxel(next, x, CUBE_WIDTH - off - 1, 0), x, 0, 0);
+							cur.set_voxel(next->get_voxel(x, CUBE_WIDTH - off - 1, 0), x, 0, 0);
 						}
 					}
 				}
@@ -159,35 +161,35 @@ void scrolltext(const struct cubeframe *frames, size_t count, uint8_t direction,
 					{
 						for (uint8_t x = CUBE_WIDTH - 2; ; x--)
 						{
-							cm_set_voxel(&cur, cm_get_voxel(&cur, x, y, 0), x + 1, y, 0);
+							cur.set_voxel(cur.get_voxel(x, y, 0), x + 1, y, 0);
 							if(!x)
 								break;
 						}
 
 						if(s < spacing)
 						{
-							cm_set_voxel(&cur, 0, 0, y, 0);
+							cur.set_voxel(0, 0, y, 0);
 						}else
 						{
-							cm_set_voxel(&cur, cm_get_voxel(next, CUBE_WIDTH - off - 1, y, 0), 0, y, 0);
+							cur.set_voxel(next->get_voxel(CUBE_WIDTH - off - 1, y, 0), 0, y, 0);
 						}
 					}else
 					{
 						for (uint8_t x = 1; x < CUBE_WIDTH; x++)
-							cm_set_voxel(&cur, cm_get_voxel(&cur, x, y, 0), x - 1, y, 0);
+							cur.set_voxel(cur.get_voxel(x, y, 0), x - 1, y, 0);
 
 						if(s < spacing)
 						{
-							cm_set_voxel(&cur, 0, CUBE_WIDTH - 1, y, 0);
+							cur.set_voxel(0, CUBE_WIDTH - 1, y, 0);
 						}else
 						{
-							cm_set_voxel(&cur, cm_get_voxel(next, off, y, 0), CUBE_WIDTH - 1, y, 0);
+							cur.set_voxel(next->get_voxel(off, y, 0), CUBE_WIDTH - 1, y, 0);
 						}
 					}
 				}
 			}
 
-			cm_draw_frame(&cur);
+			cur.draw_frame();
 		}
 	}
 }

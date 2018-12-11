@@ -8,10 +8,10 @@ namespace ledcube
 {
 	namespace pattern
 	{
-		void alternate_full(struct cubeframe *fr, uint8_t zero_on);
-		void border(struct cubeframe *fr, uint8_t led_on, uint8_t width);
-		void random(struct cubeframe *fr);
-		void random_modify(struct cubeframe *fr, struct cubeframe *ref, size_t count);
+		void alternate_full(Cubeframe &fr, uint8_t zero_on);
+		void border(Cubeframe &fr, uint8_t led_on, uint8_t width);
+		void random(Cubeframe &fr);
+		void random_modify(Cubeframe &fr, Cubeframe &ref, size_t count);
 
 		void border_bounce(size_t count, uint16_t delay);
 		void border_spin(uint8_t clockwise, cubeperim voxelperlevel, size_t count, uint16_t delay);

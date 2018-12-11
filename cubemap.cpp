@@ -26,6 +26,11 @@ namespace ledcube {
 	volatile int g_patternKillFlag = 0;
 #endif
 
+Cubeframe::Cubeframe()
+{
+	this->delay = 0;
+}
+
 Cubeframe::Cubeframe(uint16_t delayms)
 {
 	this->delay = delayms;
@@ -51,7 +56,7 @@ uint8_t Cubeframe::get_xz(const cubelvl level, uint8_t x, uint8_t z)
 	return Cubeframe::get_col(level, z * CUBE_WIDTH + x);
 }
 
-uint8_t Cubeframe::get_voxel(uint8_t x, uint8_t y, uint8_t z)
+uint8_t Cubeframe::get_voxel(uint8_t x, uint8_t y, uint8_t z) const
 {
 	return this->get_xz(this->levels[y], x, z);
 }
@@ -108,7 +113,7 @@ void Cubeframe::zrow(uint8_t led_on, uint8_t y, uint8_t z)
 		this->set_voxel(led_on, x, y, z);
 }
 
-void Cubeframe::get_xplane(cubelvl plane, uint8_t x)
+void Cubeframe::get_xplane(cubelvl plane, uint8_t x) const
 {
 	for (uint8_t y = 0; y < CUBE_WIDTH; y++)
 	{
@@ -117,12 +122,12 @@ void Cubeframe::get_xplane(cubelvl plane, uint8_t x)
 	}
 }
 
-void Cubeframe::get_yplane(cubelvl plane, uint8_t y)
+void Cubeframe::get_yplane(cubelvl plane, uint8_t y) const
 {
 	memcpy(plane, this->levels[y], CUBELVL_SIZE);
 }
 
-void Cubeframe::get_zplane(cubelvl plane, uint8_t z)
+void Cubeframe::get_zplane(cubelvl plane, uint8_t z) const
 {
 	for (uint8_t y = 0; y < CUBE_WIDTH; y++)
 	{
@@ -352,7 +357,7 @@ static void shiftout_level(const cubelvl level)
 #endif //ndef TEST_NOTEENSY
 }
 
-void Cubeframe::draw_level(uint8_t y)
+void Cubeframe::draw_level(uint8_t y) const
 {
 #ifndef TEST_NOTEENSY
 	for (uint8_t i = 0; i < CUBE_WIDTH; i++)
@@ -364,7 +369,7 @@ void Cubeframe::draw_level(uint8_t y)
 #endif
 }
 
-void Cubeframe::draw_frame()
+void Cubeframe::draw_frame() const
 {
 #ifdef TEST_NOTEENSY
 	this->print_frame();
@@ -434,7 +439,7 @@ void Cubeframe::print_plane(const cubelvl plane, uint8_t multilevel)
 	putchar('\n');
 }
 
-void Cubeframe::print_frame()
+void Cubeframe::print_frame() const
 {
 	for (uint8_t y = 0; y < CUBE_WIDTH; y++)
 		Cubeframe::print_plane(this->levels[y], 1);

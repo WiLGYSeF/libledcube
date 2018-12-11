@@ -66,7 +66,7 @@ namespace ledcube
 	#elif CUBE_WIDTH <= 40
 		typedef uint16_t cubevol;
 	#else
-		typedef size_t cubevol;
+		typedef uint32_t cubevol;
 	#endif
 
 	class Cubeframe
@@ -92,6 +92,7 @@ namespace ledcube
 	*/
 		cubelvl levels[CUBE_WIDTH];
 
+		Cubeframe();
 		Cubeframe(uint16_t delayms);
 
 		static cubecol xz_to_col(uint8_t x, uint8_t z);
@@ -99,7 +100,7 @@ namespace ledcube
 
 		static uint8_t get_col(const cubelvl level, cubecol col);
 		static uint8_t get_xz(const cubelvl level, uint8_t x, uint8_t z);
-		uint8_t get_voxel(uint8_t x, uint8_t y, uint8_t z);
+		uint8_t get_voxel(uint8_t x, uint8_t y, uint8_t z) const;
 
 		static void set_col(cubelvl level, uint8_t led_on, cubecol col);
 		static void set_xz(cubelvl level, uint8_t led_on, uint8_t x, uint8_t z);
@@ -111,9 +112,9 @@ namespace ledcube
 		void xrow(uint8_t led_on, uint8_t x, uint8_t y);
 		void ycol(uint8_t led_on, uint8_t x, uint8_t z);
 		void zrow(uint8_t led_on, uint8_t y, uint8_t z);
-		void get_xplane(cubelvl plane, uint8_t x);
-		void get_yplane(cubelvl plane, uint8_t y);
-		void get_zplane(cubelvl plane, uint8_t z);
+		void get_xplane(cubelvl plane, uint8_t x) const;
+		void get_yplane(cubelvl plane, uint8_t y) const;
+		void get_zplane(cubelvl plane, uint8_t z) const;
 		void set_xplane(const cubelvl plane, uint8_t x);
 		void set_yplane(const cubelvl plane, uint8_t y);
 		void set_zplane(const cubelvl plane, uint8_t z);
@@ -126,12 +127,12 @@ namespace ledcube
 		static void reverse_plane(cubelvl plane, uint8_t dir);
 		static void rotate_plane(cubelvl plane, uint8_t times);
 
-		void draw_level(uint8_t y);
-		void draw_frame();
+		void draw_level(uint8_t y) const;
+		void draw_frame() const;
 		static void delay_frame(uint16_t delayms);
 	#ifdef TEST_NOTEENSY
 		static void print_plane(const cubelvl plane, uint8_t multilevel);
-		void print_frame();
+		void print_frame() const;
 	#endif
 	};
 
