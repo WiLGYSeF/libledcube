@@ -367,6 +367,10 @@ void cm_draw_level(const struct cubeframe *fr, uint8_t y)
 
 void cm_draw_frame(const struct cubeframe *fr)
 {
+#ifdef TEST_NOTEENSY
+	cm_print_frame(fr);
+	usleep(fr->delay * 1000);
+#else
 	uint16_t loops = fr->delay / CUBE_WIDTH / LEVEL_DELAY;
 	if(!loops)
 		loops = 1;
@@ -381,16 +385,9 @@ void cm_draw_frame(const struct cubeframe *fr)
 			digitalWrite(pin_ymap[y ? y - 1 : CUBE_WIDTH - 1], LOW);
 			shiftout_level(fr->levels[y]);
 			digitalWrite(pin_ymap[y], HIGH);
-
-		#ifndef TEST_NOTEENSY
 			delay(LEVEL_DELAY);
-		#endif
 		}
 	}
-
-#ifdef TEST_NOTEENSY
-	cm_print_frame(fr);
-	usleep(fr->delay * 1000);
 #endif
 
 #ifdef CUBE_CURFRAME

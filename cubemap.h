@@ -46,17 +46,24 @@
 extern "C" {
 #endif
 
+//variable type for storing a cube plane
 typedef uint8_t cubelvl[CUBELVL_SIZE];
+
+//variable type for storing a cube column number, or the cube column x-z coordinates
 #if CUBE_WIDTH < 16
 	typedef uint8_t cubecol;
 #else
 	typedef uint16_t cubecol;
 #endif
+
+//variable type for storing a cube perimeter column number
 #if CUBE_WIDTH <= 64
 	typedef uint8_t cubeperim;
 #else
 	typedef uint16_t cubeperim;
 #endif
+
+//variable type for storing a cube volume size
 #if CUBE_WIDTH <= 6
 	typedef uint8_t cubevol;
 #elif CUBE_WIDTH <= 40
@@ -66,6 +73,7 @@ typedef uint8_t cubelvl[CUBELVL_SIZE];
 #endif
 
 struct cubeframe {
+	//milliseconds
 	uint16_t delay;
 /*
 	level bits
