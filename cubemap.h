@@ -41,107 +41,110 @@
 #else
 	#define CUBELVL_SIZE ((CUBE_AREA >> 3) + 1)
 #endif
+namespace ledcube
+{
+	//variable type for storing a cube plane
+	typedef uint8_t cubelvl[CUBELVL_SIZE];
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+	//variable type for storing a cube column number, or the cube column x-z coordinates
+	#if CUBE_WIDTH < 16
+		typedef uint8_t cubecol;
+	#else
+		typedef uint16_t cubecol;
+	#endif
 
-//variable type for storing a cube plane
-typedef uint8_t cubelvl[CUBELVL_SIZE];
+	//variable type for storing a cube perimeter column number
+	#if CUBE_WIDTH <= 64
+		typedef uint8_t cubeperim;
+	#else
+		typedef uint16_t cubeperim;
+	#endif
 
-//variable type for storing a cube column number, or the cube column x-z coordinates
-#if CUBE_WIDTH < 16
-	typedef uint8_t cubecol;
-#else
-	typedef uint16_t cubecol;
-#endif
+	//variable type for storing a cube volume size
+	#if CUBE_WIDTH <= 6
+		typedef uint8_t cubevol;
+	#elif CUBE_WIDTH <= 40
+		typedef uint16_t cubevol;
+	#else
+		typedef size_t cubevol;
+	#endif
 
-//variable type for storing a cube perimeter column number
-#if CUBE_WIDTH <= 64
-	typedef uint8_t cubeperim;
-#else
-	typedef uint16_t cubeperim;
-#endif
+	class Cubeframe
+	{
+	public:
+		//milliseconds
+		uint16_t delay;
+	/*
+		level bits
+		 20 21 22 23 24
+		 15 16 17 18 19
+		 10 11 12 13 14
+		  5  6  7  8  9
+		  0  1  2  3  4
+		  ^
+		  |
+		front left
 
-//variable type for storing a cube volume size
-#if CUBE_WIDTH <= 6
-	typedef uint8_t cubevol;
-#elif CUBE_WIDTH <= 40
-	typedef uint16_t cubevol;
-#else
-	typedef size_t cubevol;
-#endif
+		 0  1  2  3  4: 5  6  7
+		 8  9:10 11 12 13 14:15
+		16 17 18 19:20 21 22 23
+		24
+	*/
+		cubelvl levels[CUBE_WIDTH];
 
-struct cubeframe {
-	//milliseconds
-	uint16_t delay;
-/*
-	level bits
-	 20 21 22 23 24
-	 15 16 17 18 19
-	 10 11 12 13 14
-	  5  6  7  8  9
-	  0  1  2  3  4
-	  ^
-	  |
-	front left
+		Cubeframe(uint16_t delayms);
 
-	 0  1  2  3  4: 5  6  7
-	 8  9:10 11 12 13 14:15
-	16 17 18 19:20 21 22 23
-	24
-*/
-	cubelvl levels[CUBE_WIDTH];
-};
+		static cubecol xz_to_col(uint8_t x, uint8_t z);
+		static uint16_t col_to_xz(cubecol col);
 
-cubecol cm_xz_to_col(uint8_t x, uint8_t z);
-uint16_t cm_col_to_xz(cubecol col);
+		static uint8_t get_col(const cubelvl level, cubecol col);
+		static uint8_t get_xz(const cubelvl level, uint8_t x, uint8_t z);
+		uint8_t get_voxel(uint8_t x, uint8_t y, uint8_t z);
 
-uint8_t cm_get_col(const cubelvl level, cubecol col);
-uint8_t cm_get_xz(const cubelvl level, uint8_t x, uint8_t z);
-uint8_t cm_get_voxel(const struct cubeframe *fr, uint8_t x, uint8_t y, uint8_t z);
-void cm_set_col(cubelvl level, uint8_t led_on, cubecol col);
-void cm_set_xz(cubelvl level, uint8_t led_on, uint8_t x, uint8_t z);
-void cm_set_voxel(struct cubeframe *fr, uint8_t led_on, uint8_t x, uint8_t y, uint8_t z);
-void cm_set_level(struct cubeframe *fr, uint8_t led_on, uint8_t y);
-void cm_set(struct cubeframe *fr, uint8_t led_on);
+		static void set_col(cubelvl level, uint8_t led_on, cubecol col);
+		static void set_xz(cubelvl level, uint8_t led_on, uint8_t x, uint8_t z);
 
-void cm_xrow(struct cubeframe *fr, uint8_t led_on, uint8_t x, uint8_t y);
-void cm_ycol(struct cubeframe *fr, uint8_t led_on, uint8_t x, uint8_t z);
-void cm_zrow(struct cubeframe *fr, uint8_t led_on, uint8_t y, uint8_t z);
-void cm_get_xplane(const struct cubeframe *fr, cubelvl plane, uint8_t x);
-void cm_get_yplane(const struct cubeframe *fr, cubelvl plane, uint8_t y);
-void cm_get_zplane(const struct cubeframe *fr, cubelvl plane, uint8_t z);
-void cm_set_xplane(struct cubeframe *fr, const cubelvl plane, uint8_t x);
-void cm_set_yplane(struct cubeframe *fr, const cubelvl plane, uint8_t y);
-void cm_set_zplane(struct cubeframe *fr, const cubelvl plane, uint8_t z);
-void cm_xplane(struct cubeframe *fr, uint8_t led_on, uint8_t x);
-void cm_yplane(struct cubeframe *fr, uint8_t led_on, uint8_t y);
-void cm_zplane(struct cubeframe *fr, uint8_t led_on, uint8_t z);
+		void set_voxel(uint8_t led_on, uint8_t x, uint8_t y, uint8_t z);
+		void set_level(uint8_t led_on, uint8_t y);
+		void set(uint8_t led_on);
 
-void cm_shift_plane(struct cubeframe *fr, uint8_t axisdir);
-void cm_reverse_plane(cubelvl plane, uint8_t dir);
-void cm_rotate_plane(cubelvl plane, uint8_t times);
+		void xrow(uint8_t led_on, uint8_t x, uint8_t y);
+		void ycol(uint8_t led_on, uint8_t x, uint8_t z);
+		void zrow(uint8_t led_on, uint8_t y, uint8_t z);
+		void get_xplane(cubelvl plane, uint8_t x);
+		void get_yplane(cubelvl plane, uint8_t y);
+		void get_zplane(cubelvl plane, uint8_t z);
+		void set_xplane(const cubelvl plane, uint8_t x);
+		void set_yplane(const cubelvl plane, uint8_t y);
+		void set_zplane(const cubelvl plane, uint8_t z);
+		void xplane(uint8_t led_on, uint8_t x);
+		void yplane(uint8_t led_on, uint8_t y);
+		void zplane(uint8_t led_on, uint8_t z);
+
+		void shift_plane(uint8_t axisdir);
+
+		static void reverse_plane(cubelvl plane, uint8_t dir);
+		static void rotate_plane(cubelvl plane, uint8_t times);
+
+		void draw_level(uint8_t y);
+		void draw_frame();
+		static void delay_frame(uint16_t delayms);
+	#ifdef TEST_NOTEENSY
+		static void print_plane(const cubelvl plane, uint8_t multilevel);
+		void print_frame();
+	#endif
+	};
 
 #if !defined(TEST_NOTEENSY) && defined(USE_SPI)
-	void cm_setup_SPI();
-#endif
-void cm_draw_frame(const struct cubeframe *fr);
-void cm_delay_frame(uint16_t delayms);
-#ifdef TEST_NOTEENSY
-	void cm_print_plane(const cubelvl plane, uint8_t multilevel);
-	void cm_print_frame(const struct cubeframe *fr);
+	void setup_SPI();
 #endif
 
 #ifdef CUBE_CURFRAME
-	extern struct cubeframe g_curframe;
+	extern Cubeframe g_curframe;
 #endif
 #ifdef PATTERN_KILLFLAG
 	extern volatile int g_patternKillFlag;
 #endif
-
-#ifdef __cplusplus
 }
-#endif
 
 #endif //ndef __CUBEMAP_H
