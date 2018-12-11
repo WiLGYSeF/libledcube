@@ -85,6 +85,13 @@ namespace ledcube
 		  |
 		front left
 
+		x -->
+
+		y .
+
+		  ^
+		z |
+
 		 0  1  2  3  4: 5  6  7
 		 8  9:10 11 12 13 14:15
 		16 17 18 19:20 21 22 23
@@ -97,6 +104,9 @@ namespace ledcube
 
 		static cubecol xz_to_col(uint8_t x, uint8_t z);
 		static uint16_t col_to_xz(cubecol col);
+
+		static cubevol xyz_to_vox(uint8_t x, uint8_t y, uint8_t z);
+		static uint32_t vox_to_xyz(cubevol v);
 
 		static uint8_t get_col(const cubelvl level, cubecol col);
 		static uint8_t get_xz(const cubelvl level, uint8_t x, uint8_t z);

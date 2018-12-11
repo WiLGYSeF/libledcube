@@ -46,6 +46,19 @@ uint16_t Cubeframe::col_to_xz(cubecol col)
 	return ((col % CUBE_WIDTH) << 8) | (col / CUBE_WIDTH);
 }
 
+cubevol Cubeframe::xyz_to_vox(uint8_t x, uint8_t y, uint8_t z)
+{
+	return y * CUBE_AREA + Cubeframe::xz_to_col(x, z);
+}
+
+uint32_t Cubeframe::vox_to_xyz(cubevol v)
+{
+	uint8_t y = v / CUBE_AREA;
+	uint8_t z = (v % CUBE_AREA) / CUBE_WIDTH;
+	uint8_t x = v % CUBE_WIDTH;
+	return (x << 16) | (y << 8) | z;
+}
+
 uint8_t Cubeframe::get_col(const cubelvl level, cubecol col)
 {
 	return !!(level[col >> 3] & (1 << (col & 7)));

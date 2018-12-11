@@ -61,7 +61,6 @@ Cubeframe *buildstr(const char *str, size_t *count, uint16_t delay)
 
 	if(!*count)
 		return NULL;
-
 /*
 	struct cubeframe *frames = (struct cubeframe*)malloc(*count * sizeof(struct cubeframe));
 	if(!frames)
