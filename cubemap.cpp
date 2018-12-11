@@ -1,5 +1,5 @@
-#include <string.h>
 #include "cubemap.h"
+#include <string.h>
 #include "pins.h"
 
 #ifdef TEST_NOTEENSY

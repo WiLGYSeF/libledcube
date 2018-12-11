@@ -1,8 +1,8 @@
 #ifndef __CUBEMAP_H
 #define __CUBEMAP_H
 
-#include <stdint.h>
 #include "cubehead.h"
+#include <stdint.h>
 
 //#define CUBE_CURFRAME
 //#define TEST_NOTEENSY
