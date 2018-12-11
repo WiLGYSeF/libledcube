@@ -3,6 +3,8 @@
 
 #define ANIMATIONS 10
 
+using namespace ledcube;
+
 uint8_t statPins[] = {
 	_PSTAT0,
 	_PSTAT1,
@@ -12,7 +14,7 @@ uint8_t statPins[] = {
 };
 
 struct animation {
-	struct cubeframe *frames;
+	Cubeframe *frames;
 	size_t framecount;
 };
 
@@ -76,24 +78,23 @@ void setup()
 
 	//animation setup
 
-	anim0.frames = chmap_buildstr("JOANA", &anim0.framecount, 500);
-	anim1.frames = (struct cubeframe*)malloc(3 * sizeof(struct cubeframe));
+	anim0.frames = charmap::buildstr("WILGYSEF", &anim0.framecount, 500);
+	anim1.frames = new Cubeframe[3];
 	if(anim1.frames)
 	{
 		anim1.framecount = 3;
 
-		chmap_buildframe(&anim1.frames[0], _chm_heart);
-		anim1.frames[0].delay = 1000;
-		chmap_buildframe(&anim1.frames[1], _chm_smileyface);
-		anim1.frames[1].delay = 1000;
-		chmap_buildframe(&anim1.frames[2], _chm_star);
-		anim1.frames[2].delay = 1000;
+		charmap::buildframe(anim1.frames[0], _chm_heart, 1000);
+		charmap::buildframe(anim1.frames[1], _chm_smileyface, 1000);
+		charmap::buildframe(anim1.frames[2], _chm_star, 1000);
 	}
 
-	struct cubeframe empty;
-	empty.delay = 1;
-	cm_set(&empty, 0);
-	cm_draw_frame(&empty);
+	Cubeframe empty(1);
+	empty.set(0);
+	empty.draw_frame();
+
+	//delete anim0.frames;
+	//delete anim1.frames;
 }
 
 void loop()
@@ -115,37 +116,37 @@ void loop()
 	switch(cur_animation)
 	{
 		case 0:
-			pat_random_set(1, 40);
-			cm_delay_frame(500);
-			pat_random_set(0, 40);
+			pattern::random_set(1, 40);
+			Cubeframe::delay_frame(500);
+			pattern::random_set(0, 40);
 			break;
 		case 1:
-			pat_plane_bounce(16, 100);
+			pattern::plane_bounce(16, 100);
 			break;
 		case 2:
-			pat_rain(500, 80);
+			pattern::rain(500, 80);
 			break;
 		case 3:
-			pat_stream(AXISDIR(rand() % 3, rand() & 1), (rand() & 1) ? 30 : 60, 2, 80);
+			pattern::stream(AXISDIR(rand() % 3, rand() & 1), (rand() & 1) ? 30 : 60, 2, 80);
 			break;
 		case 4:
-			pat_send_voxel(rand() % 3, 35, 100, 60);
+			pattern::send_voxel(rand() % 3, 35, 100, 60);
 			break;
 		case 5:
-			pat_border_bounce(16, 175);
+			pattern::border_bounce(16, 175);
 			break;
 		case 6:
-			pat_firework(75, 150);
-			cm_delay_frame(rand() % (500 - 50 - 1) + 50);
+			pattern::firework(75, 150);
+			Cubeframe::delay_frame(rand() % (500 - 50 - 1) + 50);
 			break;
 		case 7:
-			pat_border_spin(1, 6, 150, 75);
+			pattern::border_spin(1, 6, 150, 75);
 			break;
 		case 8:
 		case 9:
 			{
 				struct animation *cur = animlist[cur_animation - 9];
-				struct cubeframe *fr = cur->frames;
+				Cubeframe *fr = cur->frames;
 
 				if(fr)
 				{
@@ -156,7 +157,7 @@ void loop()
 							return;
 					#endif
 
-						cm_draw_frame(fr);
+						fr->draw_frame();
 					}
 				}
 			}

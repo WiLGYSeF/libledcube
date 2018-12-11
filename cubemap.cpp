@@ -28,12 +28,12 @@ namespace ledcube {
 
 Cubeframe::Cubeframe()
 {
-	this->delay = 0;
+	this->delayms = 0;
 }
 
-Cubeframe::Cubeframe(uint16_t delayms)
+Cubeframe::Cubeframe(uint16_t delay)
 {
-	this->delay = delayms;
+	this->delayms = delay;
 }
 
 cubecol Cubeframe::xz_to_col(uint8_t x, uint8_t z)
@@ -386,9 +386,9 @@ void Cubeframe::draw_frame() const
 {
 #ifdef TEST_NOTEENSY
 	this->print_frame();
-	usleep(this->delay * 1000);
+	usleep(this->delayms * 1000);
 #else
-	uint16_t loops = this->delay / CUBE_WIDTH / LEVEL_DELAY;
+	uint16_t loops = this->delayms / CUBE_WIDTH / LEVEL_DELAY;
 	if(!loops)
 		loops = 1;
 
@@ -430,10 +430,7 @@ void Cubeframe::delay_frame(uint16_t delayms)
 		{
 			digitalWrite(pin_ymap[y ? y - 1 : CUBE_WIDTH - 1], LOW);
 			digitalWrite(pin_ymap[y], HIGH);
-
-		#ifndef TEST_NOTEENSY
 			delay(LEVEL_DELAY);
-		#endif
 		}
 	}
 #endif
@@ -467,6 +464,6 @@ void setup_SPI()
 }
 #endif
 
-} //namespace ledcube
+#endif //else def TEST_NOTEENSY
 
-#endif
+} //namespace ledcube

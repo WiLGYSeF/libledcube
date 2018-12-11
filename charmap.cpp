@@ -39,7 +39,7 @@ namespace ledcube {
 
 namespace charmap {
 
-void buildframe(Cubeframe &fr, const char *ascii)
+void buildframe(Cubeframe &fr, const char *ascii, uint16_t delay)
 {
 	for (uint8_t y = 0; y < CUBE_WIDTH; y++)
 	{
@@ -47,6 +47,8 @@ void buildframe(Cubeframe &fr, const char *ascii)
 		for (uint8_t x = 0; x < CUBE_WIDTH; x++)
 			fr.set_voxel(*(ascii + y * CUBE_WIDTH + x) == CM_ON, x, y, 0);
 	}
+
+	fr.delayms = delay;
 }
 
 Cubeframe *buildstr(const char *str, size_t *count, uint16_t delay)
@@ -78,8 +80,7 @@ Cubeframe *buildstr(const char *str, size_t *count, uint16_t delay)
 		if(!c)
 			continue;
 
-		buildframe(*curframe, c);
-		curframe->delay = delay;
+		buildframe(*curframe, c, delay);
 		curframe++;
 	}
 

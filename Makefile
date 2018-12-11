@@ -23,7 +23,7 @@ $(OBJECTS): $(SOURCEDIR)/%.o : $(SOURCEDIR)/%.cpp
 	$(CC) $(CFLAGS) $(LIBS) -c $< -o $@
 
 zip:
-	$(ZIP) $(ZIPFILE) $(SOURCES) $(HEADERS) examples/* keywords.txt readme.txt
+	$(ZIP) -r $(ZIPFILE) $(SOURCES) $(HEADERS) examples/* keywords.txt readme.txt
 
 clean:
 	-@rm $(OBJECTS)

@@ -281,9 +281,9 @@ void firework(uint16_t launchdelay, uint16_t explosiondelay)
 		fr.set_voxel(1, x, y, z);
 	}
 
-	fr.delay = explosiondelay << 1;
+	fr.delayms = explosiondelay << 1;
 	fr.draw_frame();
-	fr.delay >>= 1;
+	fr.delayms >>= 1;
 
 	for (y = 0; y < CUBE_WIDTH; y++)
 	{
@@ -502,7 +502,7 @@ void send_voxel(uint8_t axis, size_t count, uint16_t delay, uint16_t leveldelay)
 		idx = rand() % scount[sd];
 		col = sides[sd][idx];
 
-		fr.delay = leveldelay;
+		fr.delayms = leveldelay;
 		for (uint8_t i = 1; i < CUBE_WIDTH; i++)
 		{
 		#ifdef PATTERN_KILLFLAG
@@ -553,7 +553,7 @@ void send_voxel(uint8_t axis, size_t count, uint16_t delay, uint16_t leveldelay)
 
 		sd ^= 1;
 
-		fr.delay = delay;
+		fr.delayms = delay;
 		fr.draw_frame();
 	}
 }

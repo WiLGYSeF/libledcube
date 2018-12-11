@@ -72,8 +72,7 @@ namespace ledcube
 	class Cubeframe
 	{
 	public:
-		//milliseconds
-		uint16_t delay;
+		uint16_t delayms;
 	/*
 		level bits
 		 20 21 22 23 24
@@ -100,7 +99,7 @@ namespace ledcube
 		cubelvl levels[CUBE_WIDTH];
 
 		Cubeframe();
-		Cubeframe(uint16_t delayms);
+		Cubeframe(uint16_t delay);
 
 		static cubecol xz_to_col(uint8_t x, uint8_t z);
 		static uint16_t col_to_xz(cubecol col);

@@ -20,7 +20,7 @@ namespace ledcube
 #if CHMAP_WIDTH == CUBE_WIDTH
 namespace charmap
 {
-	void buildframe(Cubeframe &fr, const char *ascii);
+	void buildframe(Cubeframe &fr, const char *ascii, uint16_t delay);
 	Cubeframe *buildstr(const char *str, size_t *count, uint16_t delay);
 	void scrolltext(const struct cubeframe *frames, size_t count, uint8_t direction, size_t spacing);
 }
