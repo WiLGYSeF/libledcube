@@ -35,9 +35,11 @@ static const char *chmap_getch(char c)
 	return ascii_map[c - 32];
 }
 
-namespace Charmap {
+namespace ledcube {
 
-void chmap_buildframe(struct cubeframe *fr, const char *ascii)
+namespace charmap {
+
+void buildframe(struct cubeframe *fr, const char *ascii)
 {
 	for (uint8_t y = 0; y < CUBE_WIDTH; y++)
 	{
@@ -47,7 +49,7 @@ void chmap_buildframe(struct cubeframe *fr, const char *ascii)
 	}
 }
 
-struct cubeframe *chmap_buildstr(const char *str, size_t *count, uint16_t delay)
+struct cubeframe *buildstr(const char *str, size_t *count, uint16_t delay)
 {
 	*count = 0;
 
@@ -75,7 +77,7 @@ struct cubeframe *chmap_buildstr(const char *str, size_t *count, uint16_t delay)
 		if(!c)
 			continue;
 
-		chmap_buildframe(curframe, c);
+		buildframe(curframe, c);
 		curframe->delay = delay;
 		curframe++;
 	}
@@ -83,7 +85,7 @@ struct cubeframe *chmap_buildstr(const char *str, size_t *count, uint16_t delay)
 	return frames;
 }
 
-void chmap_scrolltext(const struct cubeframe *frames, size_t count, uint8_t direction, size_t spacing)
+void scrolltext(const struct cubeframe *frames, size_t count, uint8_t direction, size_t spacing)
 {
 	const struct cubeframe *fr = frames;
 	const struct cubeframe *next = frames + 1;
@@ -190,6 +192,8 @@ void chmap_scrolltext(const struct cubeframe *frames, size_t count, uint8_t dire
 	}
 }
 
-} //namespace Charmap
+} //namespace charmap
+
+} //namespace ledcube
 
 #endif //CHMAP_WIDTH == CUBE_WIDTH

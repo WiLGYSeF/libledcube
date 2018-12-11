@@ -3,7 +3,9 @@
 #include <string.h>
 #include "voxellist.h"
 
-namespace Pattern {
+namespace ledcube {
+
+namespace pattern {
 
 void alternate_full(struct cubeframe *fr, uint8_t zero_on)
 {
@@ -659,4 +661,6 @@ void stream(uint8_t axdir, size_t count, size_t spacing, uint16_t delay)
 	cm_draw_frame(&fr);
 }
 
-} //namespace Pattern
+} //namespace pattern
+
+} //namespace ledcube

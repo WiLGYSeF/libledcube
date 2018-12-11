@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+namespace ledcube {
+
 VoxelList::VoxelList()
 {
 	this->levelsz = CUBE_WIDTH;
@@ -52,3 +54,5 @@ int VoxelList::isempty()
 {
 	return !this->levelsz;
 }
+
+} //namespace ledcube
