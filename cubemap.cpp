@@ -9,13 +9,6 @@
 	#include <SPI.h>
 #endif
 
-const uint8_t pin_ymap[] = {
-	_PNA,
-	_PNB,
-	_PNC,
-	_PND,
-	_PNE
-};
 
 namespace ledcube {
 
@@ -374,11 +367,11 @@ void Cubeframe::draw_level(uint8_t y) const
 {
 #ifndef TEST_NOTEENSY
 	for (uint8_t i = 0; i < CUBE_WIDTH; i++)
-		digitalWrite(pin_ymap[i], LOW);
+		digitalWrite(PIN_YARR[i], LOW);
 
 	shiftout_level(this->levels[y]);
 
-	digitalWrite(pin_ymap[y], HIGH);
+	digitalWrite(PIN_YARR[y], HIGH);
 #endif
 }
 
@@ -393,15 +386,15 @@ void Cubeframe::draw_frame() const
 		loops = 1;
 
 	for (uint8_t y = 0; y < CUBE_WIDTH; y++)
-		digitalWrite(pin_ymap[y], LOW);
+		digitalWrite(PIN_YARR[y], LOW);
 
 	for (; loops; loops--)
 	{
 		for (uint8_t y = 0; y < CUBE_WIDTH; y++)
 		{
-			digitalWrite(pin_ymap[y ? y - 1 : CUBE_WIDTH - 1], LOW);
+			digitalWrite(PIN_YARR[y ? y - 1 : CUBE_WIDTH - 1], LOW);
 			shiftout_level(this->levels[y]);
-			digitalWrite(pin_ymap[y], HIGH);
+			digitalWrite(PIN_YARR[y], HIGH);
 			delay(LEVEL_DELAY);
 		}
 	}
@@ -422,14 +415,14 @@ void Cubeframe::delay_frame(uint16_t delayms)
 		loops = 1;
 
 	for (uint8_t y = 0; y < CUBE_WIDTH; y++)
-		digitalWrite(pin_ymap[y], LOW);
+		digitalWrite(PIN_YARR[y], LOW);
 
 	for (; loops; loops--)
 	{
 		for (uint8_t y = 0; y < CUBE_WIDTH; y++)
 		{
-			digitalWrite(pin_ymap[y ? y - 1 : CUBE_WIDTH - 1], LOW);
-			digitalWrite(pin_ymap[y], HIGH);
+			digitalWrite(PIN_YARR[y ? y - 1 : CUBE_WIDTH - 1], LOW);
+			digitalWrite(PIN_YARR[y], HIGH);
 			delay(LEVEL_DELAY);
 		}
 	}

@@ -13,6 +13,8 @@
 #define _PND 3
 #define _PNE 4
 
+#define PIN_YARR {_PNA, _PNB, _PNC, _PND, _PNE}
+
 //controls
 #define _PANIMITER 23
 
