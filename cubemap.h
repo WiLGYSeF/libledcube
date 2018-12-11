@@ -25,7 +25,7 @@
 #define AXISDIR(A,D) ((((A) % 3) << 1) | ((D) & 1))
 
 #ifndef LEVEL_DELAY
-	#define LEVEL_DELAY 2 //maximum is 3
+	#define LEVEL_DELAY 2 //maximum is 3 for POV for 5x5x5 cube
 #endif
 
 #ifndef CM_ON

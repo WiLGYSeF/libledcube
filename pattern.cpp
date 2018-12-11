@@ -13,7 +13,9 @@ void vl_init(struct voxel_list *vl);
 uint32_t vl_pop_voxel(struct voxel_list *vl);
 int vl_empty(struct voxel_list *vl);
 
-void pat_alternate_full(struct cubeframe *fr, uint8_t zero_on)
+namespace Pattern {
+
+void alternate_full(struct cubeframe *fr, uint8_t zero_on)
 {
 	uint8_t patt = zero_on ? 0x55 : 0xaa;
 
@@ -29,7 +31,7 @@ void pat_alternate_full(struct cubeframe *fr, uint8_t zero_on)
 	}
 }
 
-void pat_border(struct cubeframe *fr, uint8_t led_on, uint8_t width)
+void border(struct cubeframe *fr, uint8_t led_on, uint8_t width)
 {
 	uint8_t off = (CUBE_WIDTH - width) / 2;
 	width--;
@@ -71,7 +73,7 @@ void pat_border(struct cubeframe *fr, uint8_t led_on, uint8_t width)
 	}
 }
 
-void pat_random(struct cubeframe *fr)
+void random(struct cubeframe *fr)
 {
 	for (uint8_t y = 0; y < CUBE_WIDTH; y++)
 	{
@@ -80,7 +82,7 @@ void pat_random(struct cubeframe *fr)
 	}
 }
 
-void pat_random_modify(struct cubeframe *fr, struct cubeframe *ref, size_t count)
+void random_modify(struct cubeframe *fr, struct cubeframe *ref, size_t count)
 {
 	struct voxel_list vl;
 	vl_init(&vl);
@@ -105,7 +107,7 @@ void pat_random_modify(struct cubeframe *fr, struct cubeframe *ref, size_t count
 
 //----
 
-void pat_border_bounce(size_t count, uint16_t delay)
+void border_bounce(size_t count, uint16_t delay)
 {
 	struct cubeframe fr;
 	fr.delay = delay;
@@ -152,7 +154,7 @@ void pat_border_bounce(size_t count, uint16_t delay)
 	cm_draw_frame(&fr);
 }
 
-void pat_border_spin(uint8_t clockwise, cubeperim voxelperlevel, size_t count, uint16_t delay)
+void border_spin(uint8_t clockwise, cubeperim voxelperlevel, size_t count, uint16_t delay)
 {
 	struct cubeframe fr;
 	cm_set(&fr, 0);
@@ -235,7 +237,7 @@ void pat_border_spin(uint8_t clockwise, cubeperim voxelperlevel, size_t count, u
 	}
 }
 
-void pat_firework(uint16_t launchdelay, uint16_t explosiondelay)
+void firework(uint16_t launchdelay, uint16_t explosiondelay)
 {
 	struct cubeframe fr;
 	cm_set(&fr, 0);
@@ -308,7 +310,7 @@ void pat_firework(uint16_t launchdelay, uint16_t explosiondelay)
 	}
 }
 
-void pat_plane_bounce(size_t count, uint16_t delay)
+void plane_bounce(size_t count, uint16_t delay)
 {
 	struct cubeframe fr;
 	cm_set(&fr, 0);
@@ -347,7 +349,7 @@ void pat_plane_bounce(size_t count, uint16_t delay)
 	cm_draw_frame(&fr);
 }
 
-void pat_rain(size_t count, uint16_t delay)
+void rain(size_t count, uint16_t delay)
 {
 	struct cubeframe fr;
 	cm_set(&fr, 0);
@@ -416,7 +418,7 @@ void pat_rain(size_t count, uint16_t delay)
 	}
 }
 
-void pat_random_set(uint8_t led_on, uint16_t delay)
+void random_set(uint8_t led_on, uint16_t delay)
 {
 	struct cubeframe fr;
 	cm_set(&fr, !led_on);
@@ -445,7 +447,7 @@ void pat_random_set(uint8_t led_on, uint16_t delay)
 	}
 }
 
-void pat_send_voxel(uint8_t axis, size_t count, uint16_t delay, uint16_t leveldelay)
+void send_voxel(uint8_t axis, size_t count, uint16_t delay, uint16_t leveldelay)
 {
 	struct cubeframe fr;
 	cm_set(&fr, 0);
@@ -573,7 +575,7 @@ void pat_send_voxel(uint8_t axis, size_t count, uint16_t delay, uint16_t levelde
 	}
 }
 
-void pat_stream(uint8_t axdir, size_t count, size_t spacing, uint16_t delay)
+void stream(uint8_t axdir, size_t count, size_t spacing, uint16_t delay)
 {
 	struct cubeframe fr;
 	cm_set(&fr, 0);
@@ -668,6 +670,8 @@ void pat_stream(uint8_t axdir, size_t count, size_t spacing, uint16_t delay)
 
 	cm_draw_frame(&fr);
 }
+
+} //namespace Pattern
 
 void vl_init(struct voxel_list *vl)
 {
