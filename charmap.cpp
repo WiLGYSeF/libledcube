@@ -51,7 +51,7 @@ void buildframe(Cubeframe &fr, const char *ascii, uint16_t delay)
 	fr.delayms = delay;
 }
 
-Cubeframe *buildstr(const char *str, size_t *count, uint16_t delay)
+Cubeframe *buildstr(const char *str, size_t *count, uint16_t delay, bool startblank)
 {
 	*count = 0;
 
@@ -63,6 +63,9 @@ Cubeframe *buildstr(const char *str, size_t *count, uint16_t delay)
 
 	if(!*count)
 		return NULL;
+
+	if(startblank)
+		(*count)++;
 /*
 	struct cubeframe *frames = (struct cubeframe*)malloc(*count * sizeof(struct cubeframe));
 	if(!frames)
@@ -73,6 +76,12 @@ Cubeframe *buildstr(const char *str, size_t *count, uint16_t delay)
 */
 	Cubeframe *frames = new Cubeframe[*count];
 	Cubeframe *curframe = frames;
+
+	if(startblank)
+	{
+		buildframe(*curframe, chmap_getch(' '), delay);
+		curframe++;
+	}
 
 	for (const char *p = str; *p; p++)
 	{

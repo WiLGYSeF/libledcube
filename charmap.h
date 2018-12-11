@@ -21,8 +21,8 @@ namespace ledcube
 namespace charmap
 {
 	void buildframe(Cubeframe &fr, const char *ascii, uint16_t delay);
-	Cubeframe *buildstr(const char *str, size_t *count, uint16_t delay);
-	void scrolltext(const struct cubeframe *frames, size_t count, uint8_t direction, size_t spacing);
+	Cubeframe *buildstr(const char *str, size_t *count, uint16_t delay, bool startblank);
+	void scrolltext(const Cubeframe *frames, size_t count, uint8_t direction, size_t spacing);
 }
 #endif
 
