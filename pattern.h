@@ -2,6 +2,7 @@
 #define __PATTERN_H
 
 #include "cubemap.h"
+#include <stdlib.h>
 
 namespace Pattern
 {
