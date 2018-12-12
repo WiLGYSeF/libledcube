@@ -2,15 +2,20 @@
 #include <string.h>
 #include "pins.h"
 
-#ifdef TEST_NOTEENSY
+#ifdef ARDUINO
+	#include <SPI.h>
+
+	#ifndef digitalWriteFast
+		#define digitalWriteFast(P, V) digitalWrite((P), (V))
+		#warning "digitalWriteFast() was not defined, using digitalWrite()"
+	#endif
+#else
 	#include <stdio.h>
 	#include <unistd.h>
-#else
-	#include <SPI.h>
-#endif
 
-static const char *hex = "0123456789abcdef";
-static const char *base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+	static const char *hex = "0123456789abcdef";
+	static const char *base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+#endif
 
 namespace ledcube {
 
@@ -20,7 +25,7 @@ namespace ledcube {
 #ifdef PATTERN_KILLFLAG
 	volatile int g_patternKillFlag = 0;
 #endif
-#ifdef TEST_NOTEENSY
+#ifndef ARDUINO
 	int g_verboseprint = 0;
 #endif
 
@@ -315,7 +320,7 @@ void Cubeframe::rotate_plane(cubelvl plane, uint8_t times)
 
 static void shiftout_level(const cubelvl level)
 {
-#ifndef TEST_NOTEENSY
+#ifdef ARDUINO
 	digitalWriteFast(_PLATCH, LOW);
 
 #ifdef USE_SPI
@@ -362,15 +367,15 @@ static void shiftout_level(const cubelvl level)
 		digitalWriteFast(_PCLOCK, LOW);
 	}
 
-#endif //USE_SPI
+#endif //else USE_SPI
 
 	digitalWriteFast(_PLATCH, HIGH);
-#endif //ndef TEST_NOTEENSY
+#endif //def ARDUINO
 }
 
 void Cubeframe::draw_level(uint8_t y) const
 {
-#ifndef TEST_NOTEENSY
+#ifdef ARDUINO
 	for (uint8_t i = 0; i < CUBE_WIDTH; i++)
 		digitalWrite(PIN_YARR[i], LOW);
 
@@ -382,10 +387,7 @@ void Cubeframe::draw_level(uint8_t y) const
 
 void Cubeframe::draw_frame() const
 {
-#ifdef TEST_NOTEENSY
-	this->print_frame();
-	usleep(this->delayms * 1000);
-#else
+#ifdef ARDUINO
 	uint16_t loops = this->delayms / CUBE_WIDTH / LEVEL_DELAY;
 	if(!loops)
 		loops = 1;
@@ -403,6 +405,9 @@ void Cubeframe::draw_frame() const
 			delay(LEVEL_DELAY);
 		}
 	}
+#else
+	this->print_frame();
+	usleep(this->delayms * 1000);
 #endif
 
 #ifdef CUBE_CURFRAME
@@ -412,9 +417,7 @@ void Cubeframe::draw_frame() const
 
 void Cubeframe::delay_frame(uint16_t delayms)
 {
-#ifdef TEST_NOTEENSY
-	usleep(delayms * 1000);
-#else
+#ifdef ARDUINO
 	uint16_t loops = delayms / CUBE_WIDTH / LEVEL_DELAY;
 	if(!loops)
 		loops = 1;
@@ -431,10 +434,12 @@ void Cubeframe::delay_frame(uint16_t delayms)
 			delay(LEVEL_DELAY);
 		}
 	}
+#else
+	usleep(delayms * 1000);
 #endif
 }
 
-#ifdef TEST_NOTEENSY
+#ifndef ARDUINO
 void Cubeframe::print_plane(const cubelvl plane, uint8_t multilevel)
 {
 	for (uint8_t z = 0; z < CUBE_WIDTH; z++)
@@ -525,20 +530,19 @@ void Cubeframe::print_frame() const
 		}
 
 		putchar('x');
+		putchar('\n');
+		putchar('\n');
 	}
-
-	putchar('\n');
-	putchar('\n');
 }
 
-#if !defined(TEST_NOTEENSY) && defined(USE_SPI)
 void setup_SPI()
 {
+#if defined(ARDUINO) && defined(USE_SPI)
 	SPI.begin();
 	SPI.beginTransaction(SPISettings(24000000, LSBFIRST, SPI_MODE0));
-}
 #endif
+}
 
-#endif //else def TEST_NOTEENSY
+#endif //else ndef ARDUINO
 
 } //namespace ledcube

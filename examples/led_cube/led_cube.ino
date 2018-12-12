@@ -51,8 +51,8 @@ void setup()
 	pinMode(_PSTAT3, OUTPUT);
 	pinMode(_PSTAT4, OUTPUT);
 
-#if !defined(TEST_NOTEENSY) && defined(USE_SPI)
-	cm_setup_SPI();
+#ifdef USE_SPI
+	setup_SPI();
 #endif
 
 	digitalWrite(_PNA, LOW);

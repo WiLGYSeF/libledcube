@@ -1,11 +1,8 @@
 #ifndef __CHARMAP_H
 #define __CHARMAP_H
 
-#ifdef TEST_NOTEENSY
-	#include <malloc.h>
-#endif
-
 #include <stdint.h>
+#include <stdlib.h>
 #include "cubemap.h"
 
 #define CHMAP_WIDTH 5

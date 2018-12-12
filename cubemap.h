@@ -4,8 +4,8 @@
 #include "cubehead.h"
 #include <stdint.h>
 
+//#define ARDUINO
 //#define CUBE_CURFRAME
-//#define TEST_NOTEENSY
 //#define USE_SPI
 
 #define AXIS_X 0
@@ -139,15 +139,13 @@ namespace ledcube
 		void draw_level(uint8_t y) const;
 		void draw_frame() const;
 		static void delay_frame(uint16_t delayms);
-	#ifdef TEST_NOTEENSY
+	#ifndef ARDUINO
 		static void print_plane(const cubelvl plane, uint8_t multilevel);
 		void print_frame() const;
 	#endif
 	};
 
-#if !defined(TEST_NOTEENSY) && defined(USE_SPI)
 	void setup_SPI();
-#endif
 
 #ifdef CUBE_CURFRAME
 	extern Cubeframe g_curframe;
@@ -155,7 +153,7 @@ namespace ledcube
 #ifdef PATTERN_KILLFLAG
 	extern volatile int g_patternKillFlag;
 #endif
-#ifdef TEST_NOTEENSY
+#ifndef ARDUINO
 	extern int g_verboseprint;
 #endif
 }
