@@ -4,10 +4,6 @@
 #include "cubehead.h"
 #include <stdint.h>
 
-//#define ARDUINO
-//#define CUBE_CURFRAME
-//#define USE_SPI
-
 #define AXIS_X 0
 #define AXIS_Y 1
 #define AXIS_Z 2
