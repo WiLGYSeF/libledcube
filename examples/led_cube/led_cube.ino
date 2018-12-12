@@ -78,7 +78,7 @@ void setup()
 
 	//animation setup
 
-	anim0.frames = charmap::buildstr("WILGYSEF", &anim0.framecount, 500);
+	anim0.frames = charmap::buildstr("WILGYSEF", &anim0.framecount, 500, false);
 	anim1.frames = new Cubeframe[3];
 	if(anim1.frames)
 	{
