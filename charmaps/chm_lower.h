@@ -8,212 +8,238 @@
 #endif
 
 //a
-const char _c61[] =
+const unsigned char _c61[] =
+CHARMAP_DATA(
 	"....."
 	".##.."
 	"#..#."
 	"#..#."
 	".####"
-;
+, PROTECT({0x03, 0x25, 0x27, 0x80}) );
 //b
-const char _c62[] =
+const unsigned char _c62[] =
+CHARMAP_DATA(
 	"#...."
 	"#...."
 	"##..."
 	"#.#.."
 	"##..."
-;
+, PROTECT({0x84, 0x31, 0x4c, 0x00}) );
 //c
-const char _c63[] =
+const unsigned char _c63[] =
+CHARMAP_DATA(
 	"....."
 	".##.."
 	"#...."
 	"#...."
 	".##.."
-;
+, PROTECT({0x03, 0x21, 0x06, 0x00}) );
 //d
-const char _c64[] =
+const unsigned char _c64[] =
+CHARMAP_DATA(
 	"..#.."
 	"..#.."
 	".##.."
 	"#.#.."
 	".##.."
-;
+, PROTECT({0x21, 0x19, 0x46, 0x00}) );
 //e
-const char _c65[] =
+const unsigned char _c65[] =
+CHARMAP_DATA(
 	".##.."
 	"#..#."
 	"####."
 	"#...."
 	".###."
-;
+, PROTECT({0x64, 0xbd, 0x07, 0x00}) );
 //f
-const char _c66[] =
+const unsigned char _c66[] =
+CHARMAP_DATA(
 	".###."
 	"#...."
 	"###.."
 	"#...."
 	"#...."
-;
+, PROTECT({0x74, 0x39, 0x08, 0x00}) );
 //g
-const char _c67[] =
+const unsigned char _c67[] =
+CHARMAP_DATA(
 	"..##."
 	".#..#"
 	"..###"
 	"....#"
 	"..##."
-;
+, PROTECT({0x32, 0x4e, 0x13, 0x00}) );
 //h
-const char _c68[] =
+const unsigned char _c68[] =
+CHARMAP_DATA(
 	"#...."
 	"#...."
 	"##..."
 	"#.#.."
 	"#.#.."
-;
+, PROTECT({0x84, 0x31, 0x4a, 0x00}) );
 //i
-const char _c69[] =
+const unsigned char _c69[] =
+CHARMAP_DATA(
 	"..#.."
 	"....."
 	"..#.."
 	"..#.."
 	"..#.."
-;
+, PROTECT({0x20, 0x08, 0x42, 0x00}) );
 //j
-const char _c6a[] =
+const unsigned char _c6a[] =
+CHARMAP_DATA(
 	"..#.."
 	"....."
 	"..#.."
 	"..#.."
 	"##..."
-;
+, PROTECT({0x20, 0x08, 0x4c, 0x00}) );
 //k
-const char _c6b[] =
+const unsigned char _c6b[] =
+CHARMAP_DATA(
 	"#...."
 	"#...."
 	"#.#.."
 	"##..."
 	"#.#.."
-;
+, PROTECT({0x84, 0x29, 0x8a, 0x00}) );
 //l
-const char _c6c[] =
+const unsigned char _c6c[] =
+CHARMAP_DATA(
 	".#..."
 	".#..."
 	".#..."
 	".#..."
 	"..##."
-;
+, PROTECT({0x42, 0x10, 0x83, 0x00}) );
 //m
-const char _c6d[] =
+const unsigned char _c6d[] =
+CHARMAP_DATA(
 	"....."
 	"....."
 	".#.#."
 	"#.#.#"
 	"#...#"
-;
+, PROTECT({0x00, 0x15, 0x58, 0x80}) );
 //n
-const char _c6e[] =
+const unsigned char _c6e[] =
+CHARMAP_DATA(
 	"....."
 	"....."
 	"##..."
 	"#.#.."
 	"#.#.."
-;
+, PROTECT({0x00, 0x31, 0x4a, 0x00}) );
 //o
-const char _c6f[] =
+const unsigned char _c6f[] =
+CHARMAP_DATA(
 	"....."
 	".##.."
 	"#..#."
 	"#..#."
 	".##.."
-;
+, PROTECT({0x03, 0x25, 0x26, 0x00}) );
 //p
-const char _c70[] =
+const unsigned char _c70[] =
+CHARMAP_DATA(
 	"###.."
 	"#..#."
 	"###.."
 	"#...."
 	"#...."
-;
+, PROTECT({0xe4, 0xb9, 0x08, 0x00}) );
 //q
-const char _c71[] =
+const unsigned char _c71[] =
+CHARMAP_DATA(
 	".##.."
 	"#..#."
 	".###."
 	"...#."
 	"...##"
-;
+, PROTECT({0x64, 0x9c, 0x21, 0x80}) );
 //r
-const char _c72[] =
+const unsigned char _c72[] =
+CHARMAP_DATA(
 	"....."
 	"....."
 	"..##."
 	".#..."
 	".#..."
-;
+, PROTECT({0x00, 0x0c, 0x84, 0x00}) );
 //s
-const char _c73[] =
+const unsigned char _c73[] =
+CHARMAP_DATA(
 	".###."
 	"#...."
 	".##.."
 	"...#."
 	"###.."
-;
+, PROTECT({0x74, 0x18, 0x2e, 0x00}) );
 //t
-const char _c74[] =
+const unsigned char _c74[] =
+CHARMAP_DATA(
 	"....."
 	"..#.."
 	".###."
 	"..#.."
 	"..#.."
-;
+, PROTECT({0x01, 0x1c, 0x42, 0x00}) );
 //u
-const char _c75[] =
+const unsigned char _c75[] =
+CHARMAP_DATA(
 	"....."
 	"....."
 	"#..#."
 	"#..#."
 	".##.."
-;
+, PROTECT({0x00, 0x25, 0x26, 0x00}) );
 //v
-const char _c76[] =
+const unsigned char _c76[] =
+CHARMAP_DATA(
 	"....."
 	"....."
 	"#.#.."
 	"#.#.."
 	".#..."
-;
+, PROTECT({0x00, 0x29, 0x44, 0x00}) );
 //w
-const char _c77[] =
+const unsigned char _c77[] =
+CHARMAP_DATA(
 	"....."
 	"....."
 	"#...#"
 	"#.#.#"
 	".#.#."
-;
+, PROTECT({0x00, 0x23, 0x55, 0x00}) );
 //x
-const char _c78[] =
+const unsigned char _c78[] =
+CHARMAP_DATA(
 	"....."
 	"#..#."
 	".##.."
 	".##.."
 	"#..#."
-;
+, PROTECT({0x04, 0x98, 0xc9, 0x00}) );
 //y
-const char _c79[] =
+const unsigned char _c79[] =
+CHARMAP_DATA(
 	"....."
 	"#..#."
 	".##.."
 	".#..."
 	"#...."
-;
+, PROTECT({0x04, 0x98, 0x88, 0x00}) );
 //z
-const char _c7a[] =
+const unsigned char _c7a[] =
+CHARMAP_DATA(
 	"....."
 	"####."
 	"..#.."
 	".#..."
 	"####."
-;
+, PROTECT({0x07, 0x88, 0x8f, 0x00}) );
 
 #endif //ndef __CHM_LOWER_H

@@ -56,9 +56,9 @@ cubevol Cubeframe::xyz_to_vox(uint8_t x, uint8_t y, uint8_t z)
 
 uint32_t Cubeframe::vox_to_xyz(cubevol v)
 {
+	uint8_t x = v % CUBE_WIDTH;
 	uint8_t y = v / CUBE_AREA;
 	uint8_t z = (v % CUBE_AREA) / CUBE_WIDTH;
-	uint8_t x = v % CUBE_WIDTH;
 
 	//arduino complains about type width
 	return ( ((uint32_t)x) << 16) | ( ((uint16_t)y) << 8) | z;

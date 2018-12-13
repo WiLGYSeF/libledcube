@@ -12,6 +12,10 @@
 #include "charmaps/chm_shape.h"
 #include "charmaps/chm_misc.h"
 
+#ifdef CHARMAP_COMPRESS
+	//#pragma message "Using compressed charmaps"
+#endif
+
 #ifdef INVALID_SPACE
 	#define INVALID_CHAR _c20
 #else
@@ -19,7 +23,7 @@
 #endif
 
 //32 - 126
-static const char* const ascii_map[] = {
+static const unsigned char* const ascii_map[] = {
 	_c20, _c21, _c22, _c23, _c24, _c25, _c26, _c27, _c28, _c29, _c2a, _c2b, _c2c, _c2d, _c2e, _c2f,
 	_c30, _c31, _c32, _c33, _c34, _c35, _c36, _c37, _c38, _c39, _c3a, _c3b, _c3c, _c3d, _c3e, _c3f,
 	_c40, _c41, _c42, _c43, _c44, _c45, _c46, _c47, _c48, _c49, _c4a, _c4b, _c4c, _c4d, _c4e, _c4f,
@@ -28,7 +32,7 @@ static const char* const ascii_map[] = {
 	_c70, _c71, _c72, _c73, _c74, _c75, _c76, _c77, _c78, _c79, _c7a, _c7b, _c7c, _c7d, _c7e, INVALID_CHAR,
 };
 
-static const char *chmap_getch(char c)
+static const unsigned char *chmap_getch(char c)
 {
 	if(c < 0x20 || c > 0x7e)
 		return INVALID_CHAR;
@@ -39,14 +43,35 @@ namespace ledcube {
 
 namespace charmap {
 
-void buildframe(Cubeframe &fr, const char *ascii, uint16_t delay)
+void buildframe(Cubeframe &fr, const unsigned char *ascii, uint16_t delay)
 {
+#ifdef CHARMAP_COMPRESS
+	fr.set(0);
+
+	cubecol n = 0;
+	for (uint8_t c = 0; c < CUBELVL_SIZE; c++)
+	{
+		for (uint8_t x = 0; x < 8; x++)
+		{
+			if(ascii[c] & (1 << (7 - x)))
+				fr.set_voxel(1, n % CUBE_WIDTH, n / CUBE_WIDTH, 0);
+
+			n++;
+			if(n == CUBE_AREA)
+				break;
+		}
+	}
+#else
 	for (uint8_t y = 0; y < CUBE_WIDTH; y++)
 	{
 		fr.set_level(0, y);
 		for (uint8_t x = 0; x < CUBE_WIDTH; x++)
-			fr.set_voxel(*(ascii + y * CUBE_WIDTH + x) == CM_ON, x, y, 0);
+		{
+			if(*(ascii + y * CUBE_WIDTH + x) == CM_ON)
+				fr.set_voxel(1, x, y, 0);
+		}
 	}
+#endif
 
 	fr.delayms = delay;
 }
@@ -85,7 +110,7 @@ Cubeframe *buildstr(const char *str, size_t *count, uint16_t delay, bool startbl
 
 	for (const char *p = str; *p; p++)
 	{
-		const char *c = chmap_getch(*p);
+		const unsigned char *c = chmap_getch(*p);
 		if(!c)
 			continue;
 

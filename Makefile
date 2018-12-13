@@ -1,5 +1,5 @@
 CC := g++
-CFLAGS := -Wall -Wextra -Wcast-align -Wfloat-equal -Wpointer-arith -Wshadow -Wundef -O2 -fstack-protector -DCUBE_WIDTH=5
+CFLAGS := -Wall -Wextra -Wcast-align -Wfloat-equal -Wpointer-arith -Wshadow -Wundef -O2 -fstack-protector -DCUBE_WIDTH=5 -DCHARMAP_COMPRESS
 LIBS :=
 
 LIBNAME := ledcube
@@ -25,7 +25,7 @@ $(OBJECTS): $(SOURCEDIR)/%.o : $(SOURCEDIR)/%.cpp
 	$(CC) $(CFLAGS) $(LIBS) -c $< -o $@
 
 zip:
-	$(ZIP) -r $(ZIPFILE) $(SOURCES) $(HEADERS) examples/* keywords.txt readme.txt
+	$(ZIP) -r $(ZIPFILE) $(SOURCES) $(HEADERS) examples/ keywords.txt readme.txt
 
 install:
 	mkdir -p "$(ARDUINOLIB)/lib$(LIBNAME)"
