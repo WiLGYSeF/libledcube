@@ -4,13 +4,13 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "chm_upper.h"
-#include "chm_lower.h"
-#include "chm_digit.h"
-#include "chm_punct.h"
-#include "chm_paren.h"
-#include "chm_shape.h"
-#include "chm_misc.h"
+#include "charmaps/chm_upper.h"
+#include "charmaps/chm_lower.h"
+#include "charmaps/chm_digit.h"
+#include "charmaps/chm_punct.h"
+#include "charmaps/chm_paren.h"
+#include "charmaps/chm_shape.h"
+#include "charmaps/chm_misc.h"
 
 #ifdef INVALID_SPACE
 	#define INVALID_CHAR _c20

@@ -1,7 +1,7 @@
 #ifndef __CHM_PUNCT_H
 #define __CHM_PUNCT_H
 
-#include "cubehead.h"
+#include "../cubehead.h"
 
 #if CUBE_WIDTH != 5
 	#warning "Cube character maps are designed for width of 5"

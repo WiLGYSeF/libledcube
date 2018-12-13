@@ -1,7 +1,7 @@
 #ifndef __CHM_LOWER_H
 #define __CHM_LOWER_H
 
-#include "cubehead.h"
+#include "../cubehead.h"
 
 #if CUBE_WIDTH != 5
 	#warning "Cube character maps are designed for width of 5"

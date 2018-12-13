@@ -1,5 +1,5 @@
 #include <libledcube.h>
-#include <chm_shape.h>
+#include <charmaps/chm_shape.h>
 
 #define ANIMATIONS 10
 
