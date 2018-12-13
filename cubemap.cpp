@@ -326,19 +326,16 @@ static void shiftout_level(const cubelvl level)
 	digitalWriteFast(_PLATCH, LOW);
 
 #ifdef USE_SPI
-	#error "SPI not yet implemented"
-/*
 	for (uint8_t b = 0; b < CUBELVL_SIZE; b++)
 		SPI.transfer(level[b]);
-*/
 #else //USE_SPI
 	digitalWriteFast(_PCLOCK, LOW);
 
-	digitalWriteFast(_PDATA, 0);
 /*
 	//for explicit padding
+	digitalWriteFast(_PDATA, 0);
 
-	for (uint8_t b = 8 - (CUBE_AREA % 8); b != 0; b--)
+	for (uint8_t b = 8 - (CUBE_AREA & 7); b != 0; b--)
 	{
 		digitalWriteFast(_PCLOCK, HIGH);
 		digitalWriteFast(_PCLOCK, LOW);
@@ -361,14 +358,12 @@ static void shiftout_level(const cubelvl level)
 		}
 	}
 */
-
 	for (uint16_t i = 0; i < CUBE_AREA; i++)
 	{
 		digitalWriteFast(_PDATA, !!(level[i >> 3] & (1 << (i & 7))));
 		digitalWriteFast(_PCLOCK, HIGH);
 		digitalWriteFast(_PCLOCK, LOW);
 	}
-
 #endif //else USE_SPI
 
 	digitalWriteFast(_PLATCH, HIGH);
@@ -413,6 +408,7 @@ void Cubeframe::draw_frame() const
 #endif
 
 #ifdef CUBE_CURFRAME
+	//copy the last frame drawn
 	g_curframe = this;
 #endif
 }
@@ -541,7 +537,7 @@ void setup_SPI()
 {
 #if defined(ARDUINO) && defined(USE_SPI)
 	SPI.begin();
-	SPI.beginTransaction(SPISettings(24000000, LSBFIRST, SPI_MODE0));
+	SPI.beginTransaction(SPISettings(16000000, LSBFIRST, SPI_MODE0));
 #endif
 }
 
