@@ -7,7 +7,7 @@
 	#warning "Cube character maps are designed for width of 5"
 #endif
 
-const unsigned char _chm_heart[] =
+const unsigned char _chm_heart[] PROGMEM_ENABLED =
 CHARMAP_DATA(
 	".#.#."
 	"#####"
@@ -16,7 +16,7 @@ CHARMAP_DATA(
 	"..#.."
 , PROTECT({0x57, 0xfe, 0xe2, 0x00}) );
 
-const unsigned char _chm_smileyface[] =
+const unsigned char _chm_smileyface[] PROGMEM_ENABLED =
 CHARMAP_DATA(
 	"##.##"
 	"##.##"
@@ -25,7 +25,7 @@ CHARMAP_DATA(
 	".###."
 , PROTECT({0xde, 0xc1, 0x17, 0x00}) );
 
-const unsigned char _chm_star[] =
+const unsigned char _chm_star[] PROGMEM_ENABLED =
 CHARMAP_DATA(
 	"....."
 	"..#.."

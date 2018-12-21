@@ -12,6 +12,10 @@
 #include "charmaps/chm_shape.h"
 #include "charmaps/chm_misc.h"
 
+#if defined(ARDUINO) && defined(USE_PROGMEM)
+	#include <avr/pgmspace.h>
+#endif
+
 #ifdef CHARMAP_COMPRESS
 	//#pragma message "Using compressed charmaps"
 #endif
@@ -22,8 +26,9 @@
 	#define INVALID_CHAR NULL
 #endif
 
-//32 - 126
-static const unsigned char* const ascii_map[] = {
+//ascii 32 - 126
+static const unsigned char* const ascii_map[] PROGMEM_ENABLED =
+{
 	_c20, _c21, _c22, _c23, _c24, _c25, _c26, _c27, _c28, _c29, _c2a, _c2b, _c2c, _c2d, _c2e, _c2f,
 	_c30, _c31, _c32, _c33, _c34, _c35, _c36, _c37, _c38, _c39, _c3a, _c3b, _c3c, _c3d, _c3e, _c3f,
 	_c40, _c41, _c42, _c43, _c44, _c45, _c46, _c47, _c48, _c49, _c4a, _c4b, _c4c, _c4d, _c4e, _c4f,
@@ -36,7 +41,12 @@ static const unsigned char *chmap_getch(char c)
 {
 	if(c < 0x20 || c > 0x7e)
 		return INVALID_CHAR;
+
+#ifdef USE_PROGMEM
+	return (unsigned char*)pgm_read_ptr(ascii_map + c - 32);
+#else
 	return ascii_map[c - 32];
+#endif
 }
 
 namespace ledcube {
@@ -53,7 +63,13 @@ void buildframe(Cubeframe &fr, const unsigned char *ascii, uint16_t delay)
 	{
 		for (uint8_t x = 0; x < 8; x++)
 		{
-			if(ascii[c] & (1 << (7 - x)))
+		#ifdef USE_PROGMEM
+			uint8_t a = pgm_read_byte(ascii + c);
+		#else
+			uint8_t a = ascii[c];
+		#endif
+
+			if(a & (1 << (7 - x)))
 				fr.set_voxel(1, n % CUBE_WIDTH, n / CUBE_WIDTH, 0);
 
 			n++;
@@ -67,7 +83,13 @@ void buildframe(Cubeframe &fr, const unsigned char *ascii, uint16_t delay)
 		fr.set_level(0, y);
 		for (uint8_t x = 0; x < CUBE_WIDTH; x++)
 		{
-			if(*(ascii + y * CUBE_WIDTH + x) == CM_ON)
+		#ifdef USE_PROGMEM
+			uint8_t a = pgm_read_byte(ascii + y * CUBE_WIDTH + x);
+		#else
+			uint8_t a = *(ascii + y * CUBE_WIDTH + x);
+		#endif
+
+			if(a == CM_ON)
 				fr.set_voxel(1, x, y, 0);
 		}
 	}

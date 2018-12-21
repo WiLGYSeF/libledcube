@@ -5,8 +5,11 @@
 	#include <Arduino.h>
 
 	//put defines for compiling with arduino here
-	#define PATTERN_KILLFLAG
 	#define CUBE_WIDTH 5
+	#define CHARMAP_COMPRESS
+	//#define DIGITALWRITE_SLOW
+	#define PATTERN_KILLFLAG
+	#define USE_PROGMEM
 #endif
 
 #ifndef CUBE_WIDTH
@@ -36,6 +39,12 @@
 	#define CHARMAP_DATA(U, C) C
 #else
 	#define CHARMAP_DATA(U, C) U
+#endif
+
+#ifdef USE_PROGMEM
+	#define PROGMEM_ENABLED PROGMEM
+#else
+	#define PROGMEM_ENABLED
 #endif
 
 #endif //ndef __CUBEHEAD_H

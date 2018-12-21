@@ -8,7 +8,7 @@
 #endif
 
 //
-const unsigned char _c20[] =
+const unsigned char _c20[] PROGMEM_ENABLED =
 CHARMAP_DATA(
 	"....."
 	"....."
@@ -17,7 +17,7 @@ CHARMAP_DATA(
 	"....."
 , PROTECT({0x00, 0x00, 0x00, 0x00}) );
 //!
-const unsigned char _c21[] =
+const unsigned char _c21[] PROGMEM_ENABLED =
 CHARMAP_DATA(
 	"..#.."
 	"..#.."
@@ -26,7 +26,7 @@ CHARMAP_DATA(
 	"..#.."
 , PROTECT({0x21, 0x08, 0x02, 0x00}) );
 //"
-const unsigned char _c22[] =
+const unsigned char _c22[] PROGMEM_ENABLED =
 CHARMAP_DATA(
 	"..##."
 	"..##."
@@ -35,7 +35,7 @@ CHARMAP_DATA(
 	"....."
 , PROTECT({0x31, 0x80, 0x00, 0x00}) );
 //'
-const unsigned char _c27[] =
+const unsigned char _c27[] PROGMEM_ENABLED =
 CHARMAP_DATA(
 	"..#.."
 	"..#.."
@@ -44,7 +44,7 @@ CHARMAP_DATA(
 	"....."
 , PROTECT({0x21, 0x00, 0x00, 0x00}) );
 //,
-const unsigned char _c2c[] =
+const unsigned char _c2c[] PROGMEM_ENABLED =
 CHARMAP_DATA(
 	"....."
 	"....."
@@ -53,7 +53,7 @@ CHARMAP_DATA(
 	"..#.."
 , PROTECT({0x00, 0x0c, 0x22, 0x00}) );
 //.
-const unsigned char _c2e[] =
+const unsigned char _c2e[] PROGMEM_ENABLED =
 CHARMAP_DATA(
 	"....."
 	"....."
@@ -62,7 +62,7 @@ CHARMAP_DATA(
 	"..##."
 , PROTECT({0x00, 0x00, 0x63, 0x00}) );
 //:
-const unsigned char _c3a[] =
+const unsigned char _c3a[] PROGMEM_ENABLED =
 CHARMAP_DATA(
 	"..#.."
 	"..#.."
@@ -71,7 +71,7 @@ CHARMAP_DATA(
 	"..#.."
 , PROTECT({0x21, 0x00, 0x42, 0x00}) );
 //;
-const unsigned char _c3b[] =
+const unsigned char _c3b[] PROGMEM_ENABLED =
 CHARMAP_DATA(
 	"..#.."
 	"..#.."
@@ -80,7 +80,7 @@ CHARMAP_DATA(
 	"..#.."
 , PROTECT({0x21, 0x00, 0x22, 0x00}) );
 //?
-const unsigned char _c3f[] =
+const unsigned char _c3f[] PROGMEM_ENABLED =
 CHARMAP_DATA(
 	".##.."
 	"#..#."
