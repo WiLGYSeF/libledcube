@@ -4,8 +4,12 @@
 #include "../cubehead.h"
 
 #if CUBE_WIDTH != 5
-	#warning "Cube character maps are designed for width of 5"
+	#warning "character maps are not designed for cube width specified"
 #endif
+
+namespace ledcube {
+
+namespace charmap {
 
 //0
 const unsigned char _c30[] PROGMEM_ENABLED =
@@ -97,5 +101,9 @@ CHARMAP_DATA(
 	"...#."
 	"...#."
 , PROTECT({0x64, 0x9c, 0x21, 0x00}) );
+
+} //namespace ledcube
+
+} //namespace charmap
 
 #endif //ndef __CHM_DIGIT_H

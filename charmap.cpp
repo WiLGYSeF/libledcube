@@ -1,7 +1,4 @@
 #include "charmap.h"
-
-#if CHMAP_WIDTH == CUBE_WIDTH
-
 #include <stdio.h>
 #include <string.h>
 #include "charmaps/chm_upper.h"
@@ -17,7 +14,7 @@
 #endif
 
 #ifdef CHARMAP_COMPRESS
-	//#pragma message "Using compressed charmaps"
+	//#pragma message "using compressed charmaps"
 #endif
 
 #ifdef INVALID_SPACE
@@ -25,6 +22,10 @@
 #else
 	#define INVALID_CHAR NULL
 #endif
+
+namespace ledcube {
+
+namespace charmap {
 
 //ascii 32 - 126
 static const unsigned char* const ascii_map[] PROGMEM_ENABLED =
@@ -48,10 +49,6 @@ static const unsigned char *chmap_getch(char c)
 	return ascii_map[c - 32];
 #endif
 }
-
-namespace ledcube {
-
-namespace charmap {
 
 void buildframe(Cubeframe &fr, const unsigned char *ascii, uint16_t delay)
 {
@@ -253,5 +250,3 @@ void scrolltext(const Cubeframe *frames, size_t count, uint8_t direction, size_t
 } //namespace charmap
 
 } //namespace ledcube
-
-#endif //CHMAP_WIDTH == CUBE_WIDTH

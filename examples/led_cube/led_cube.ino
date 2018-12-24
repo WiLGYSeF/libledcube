@@ -5,17 +5,17 @@
 
 using namespace ledcube;
 
-uint8_t statPins[] = {
+struct animation {
+	Cubeframe *frames;
+	size_t framecount;
+};
+
+const uint8_t statPins[] = {
 	_PSTAT0,
 	_PSTAT1,
 	_PSTAT2,
 	_PSTAT3,
 	_PSTAT4
-};
-
-struct animation {
-	Cubeframe *frames;
-	size_t framecount;
 };
 
 uint8_t cur_animation = 0;
@@ -84,9 +84,9 @@ void setup()
 	{
 		anim1.framecount = 3;
 
-		charmap::buildframe(anim1.frames[0], _chm_heart, 1000);
-		charmap::buildframe(anim1.frames[1], _chm_smileyface, 1000);
-		charmap::buildframe(anim1.frames[2], _chm_star, 1000);
+		charmap::buildframe(anim1.frames[0], charmap::_chm_heart, 1000);
+		charmap::buildframe(anim1.frames[1], charmap::_chm_smileyface, 1000);
+		charmap::buildframe(anim1.frames[2], charmap::_chm_star, 1000);
 	}
 
 	Cubeframe empty(1);
@@ -130,7 +130,7 @@ void loop()
 			pattern::stream(AXISDIR(rand() % 3, rand() & 1), (rand() & 1) ? 30 : 60, 2, 80);
 			break;
 		case 4:
-			pattern::send_voxel(rand() % 3, 35, 100, 60);
+			pattern::send_voxel(rand() % 3, 35, 150, 60);
 			break;
 		case 5:
 			pattern::border_bounce(16, 175);
@@ -145,7 +145,7 @@ void loop()
 		case 8:
 		case 9:
 			{
-				struct animation *cur = animlist[cur_animation - 9];
+				struct animation *cur = animlist[cur_animation - 8];
 				Cubeframe *fr = cur->frames;
 
 				if(fr)
