@@ -320,9 +320,9 @@ void Cubeframe::rotate_plane(cubelvl plane, uint8_t times)
 	}
 }
 
+#ifdef ARDUINO
 static void shiftout_level(const cubelvl level)
 {
-#ifdef ARDUINO
 	digitalWriteFast(_PLATCH, LOW);
 
 #ifdef USE_SPI
@@ -367,8 +367,8 @@ static void shiftout_level(const cubelvl level)
 #endif //else USE_SPI
 
 	digitalWriteFast(_PLATCH, HIGH);
-#endif //def ARDUINO
 }
+#endif //def ARDUINO
 
 void Cubeframe::draw_level(uint8_t y) const
 {
@@ -379,6 +379,9 @@ void Cubeframe::draw_level(uint8_t y) const
 	shiftout_level(this->levels[y]);
 
 	digitalWrite(PIN_YARR[y], HIGH);
+#else
+	//unused parameter
+	y = y;
 #endif
 }
 
