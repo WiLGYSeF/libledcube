@@ -331,33 +331,6 @@ static void shiftout_level(const cubelvl level)
 #else //USE_SPI
 	digitalWriteFast(_PCLOCK, LOW);
 
-/*
-	//for explicit padding
-	digitalWriteFast(_PDATA, 0);
-
-	for (uint8_t b = 8 - (CUBE_AREA & 7); b != 0; b--)
-	{
-		digitalWriteFast(_PCLOCK, HIGH);
-		digitalWriteFast(_PCLOCK, LOW);
-	}
-
-	for (uint8_t i = 0; i < (CUBE_AREA & 7); i++)
-	{
-		digitalWriteFast(_PDATA, !!(level[0] & (1 << i)));
-		digitalWriteFast(_PCLOCK, HIGH);
-		digitalWriteFast(_PCLOCK, LOW);
-	}
-
-	for (uint8_t b = 1; b < CUBELVL_SIZE; b++)
-	{
-		for (uint8_t i = 0; i < 8; i++)
-		{
-			digitalWriteFast(_PDATA, !!(level[b] & (1 << i)));
-			digitalWriteFast(_PCLOCK, HIGH);
-			digitalWriteFast(_PCLOCK, LOW);
-		}
-	}
-*/
 	for (uint16_t i = 0; i < CUBE_AREA; i++)
 	{
 		digitalWriteFast(_PDATA, !!(level[i >> 3] & (1 << (i & 7))));

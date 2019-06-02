@@ -5,7 +5,7 @@
 
 #ifndef VL_LINEAR
 	#if CUBE_WIDTH <= 6
-		//this uses less memory when CUBE_WIDTH < 6
+		//this uses less memory when CUBE_WIDTH <= 6
 		#define VL_LINEAR 1
 	#else
 		#define VL_LINEAR 0

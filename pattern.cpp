@@ -7,6 +7,11 @@ namespace ledcube {
 
 namespace pattern {
 
+//=====================
+//single-frame patterns
+//=====================
+
+//alternate between on/off voxels
 void alternate_full(Cubeframe &fr, uint8_t zero_on)
 {
 	uint8_t patt = zero_on ? 0x55 : 0xaa;
@@ -23,6 +28,7 @@ void alternate_full(Cubeframe &fr, uint8_t zero_on)
 	}
 }
 
+//creates a cube border of specified width
 void border(Cubeframe &fr, uint8_t led_on, uint8_t width)
 {
 	uint8_t off = (CUBE_WIDTH - width) / 2;
@@ -65,6 +71,7 @@ void border(Cubeframe &fr, uint8_t led_on, uint8_t width)
 	}
 }
 
+//randomly set voxels
 void random(Cubeframe &fr)
 {
 	for (uint8_t y = 0; y < CUBE_WIDTH; y++)
@@ -74,6 +81,7 @@ void random(Cubeframe &fr)
 	}
 }
 
+//randomly change voxels
 void random_modify(Cubeframe &fr, Cubeframe &ref, size_t count)
 {
 	VoxelList vl;
@@ -96,8 +104,11 @@ void random_modify(Cubeframe &fr, Cubeframe &ref, size_t count)
 	}
 }
 
-//----
+//====================
+//multi-frame patterns
+//====================
 
+//make the border expand and contract
 void border_bounce(size_t count, uint16_t delay)
 {
 	Cubeframe fr(delay);
@@ -144,6 +155,7 @@ void border_bounce(size_t count, uint16_t delay)
 	fr.draw_frame();
 }
 
+//spins a random pattern along the perimeter of the cube
 void border_spin(uint8_t clockwise, cubeperim voxelperlevel, size_t count, uint16_t delay)
 {
 	Cubeframe fr(delay);
@@ -226,6 +238,7 @@ void border_spin(uint8_t clockwise, cubeperim voxelperlevel, size_t count, uint1
 	}
 }
 
+//launch fireworks
 void firework(uint16_t launchdelay, uint16_t explosiondelay)
 {
 	Cubeframe fr(launchdelay);
@@ -233,6 +246,8 @@ void firework(uint16_t launchdelay, uint16_t explosiondelay)
 
 	uint8_t launchx = rand() % (CUBE_WIDTH - 2) + 1;
 	uint8_t launchz = rand() % (CUBE_WIDTH - 2) + 1;
+
+	//launh the rocket
 
 	for (uint8_t y = CUBE_WIDTH - 1; ; y--)
 	{
@@ -259,6 +274,8 @@ void firework(uint16_t launchdelay, uint16_t explosiondelay)
 	uint8_t x, y, z;
 	uint8_t retry = 0;
 
+	//make explosion
+
 	for (cubevol pieces = (CUBE_AREA * (CUBE_WIDTH - 2)) >> 2; pieces; pieces--)
 	{
 	#ifdef PATTERN_KILLFLAG
@@ -267,6 +284,8 @@ void firework(uint16_t launchdelay, uint16_t explosiondelay)
 	#endif
 
 		retry = 0;
+
+		//tries to find unused random voxel, stops after 256 tries
 
 		do {
 			x = rand() % CUBE_WIDTH;
@@ -285,6 +304,8 @@ void firework(uint16_t launchdelay, uint16_t explosiondelay)
 	fr.draw_frame();
 	fr.delayms >>= 1;
 
+	//let everything fall
+
 	for (y = 0; y < CUBE_WIDTH; y++)
 	{
 	#ifdef PATTERN_KILLFLAG
@@ -298,6 +319,7 @@ void firework(uint16_t launchdelay, uint16_t explosiondelay)
 	}
 }
 
+//bounce planes between edges
 void plane_bounce(size_t count, uint16_t delay)
 {
 	Cubeframe fr(delay);
@@ -336,6 +358,7 @@ void plane_bounce(size_t count, uint16_t delay)
 	fr.draw_frame();
 }
 
+//rain drops
 void rain(size_t count, uint16_t delay)
 {
 	Cubeframe fr(delay);
@@ -381,6 +404,8 @@ void rain(size_t count, uint16_t delay)
 
 					if(fr.get_col(fr.levels[0], col))
 					{
+						//tries to find unused random voxel, stops after 256 tries
+
 						retry++;
 						if(retry)
 							continue;
@@ -404,6 +429,7 @@ void rain(size_t count, uint16_t delay)
 	}
 }
 
+//randomly turn on/off all voxels until all are on/off
 void random_set(uint8_t led_on, uint16_t delay)
 {
 	Cubeframe fr(delay);
@@ -431,6 +457,7 @@ void random_set(uint8_t led_on, uint16_t delay)
 	}
 }
 
+//pass voxels back and forth between edges
 void send_voxel(uint8_t axis, size_t count, uint16_t delay, uint16_t leveldelay)
 {
 	Cubeframe fr(delay);
@@ -558,6 +585,7 @@ void send_voxel(uint8_t axis, size_t count, uint16_t delay, uint16_t leveldelay)
 	}
 }
 
+//sends a stream of voxels down through the cube
 void stream(uint8_t axdir, size_t count, size_t spacing, uint16_t delay)
 {
 	Cubeframe fr(delay);

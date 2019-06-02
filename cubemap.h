@@ -39,6 +39,31 @@
 #endif
 namespace ledcube
 {
+/*
+	5x5x5 cube bitmapping example
+
+	level bits columns
+	 20 21 22 23 24
+	 15 16 17 18 19
+	 10 11 12 13 14
+	  5  6  7  8  9
+	  0  1  2  3  4
+	  ^
+	  |
+	front left
+
+	x -->
+
+
+	y (x)
+
+	  ^
+	z |
+
+	level bits msbfirst -->
+	 7  6  5: 4  3  2  1  0    15:14 13 12 11 10: 9  8    23 22 21 20:19 18 17 16     -  -  -  -  -  -  - 24
+*/
+
 	//variable type for storing a cube plane
 	typedef uint8_t cubelvl[CUBELVL_SIZE];
 
@@ -69,30 +94,6 @@ namespace ledcube
 	{
 	public:
 		uint16_t delayms;
-	/*
-		5x5x5 cube bitmapping example
-
-		level bits columns
-		 20 21 22 23 24
-		 15 16 17 18 19
-		 10 11 12 13 14
-		  5  6  7  8  9
-		  0  1  2  3  4
-		  ^
-		  |
-		front left
-
-		x -->
-
-
-		y (x)
-
-		  ^
-		z |
-
-		level bits msbfirst
-		 7  6  5: 4  3  2  1  0    15:14 13 12 11 10: 9  8    23 22 21 20:19 18 17 16     -  -  -  -  -  -  - 24
-	*/
 		cubelvl levels[CUBE_WIDTH];
 
 		Cubeframe();
