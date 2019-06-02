@@ -268,9 +268,6 @@ void firework(uint16_t launchdelay, uint16_t explosiondelay)
 
 	fr.set_voxel(0, launchx, 0, launchz);
 
-	Cubeframe modified;
-	modified.set(0);
-
 	uint8_t x, y, z;
 	uint8_t retry = 0;
 
@@ -295,7 +292,7 @@ void firework(uint16_t launchdelay, uint16_t explosiondelay)
 			retry++;
 			if(!retry)
 				break;
-		} while(modified.get_voxel(x, y, z));
+		} while(fr.get_voxel(x, y, z));
 
 		fr.set_voxel(1, x, y, z);
 	}
