@@ -31,7 +31,6 @@ namespace ledcube
 
 	public:
 		VoxelList();
-		void randomize();
 		uint32_t pop_random_voxel();
 		int isempty();
 	};

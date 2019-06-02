@@ -7,9 +7,21 @@ namespace ledcube {
 VoxelList::VoxelList()
 {
 #if VL_LINEAR
-	for (cubevol v = 0; v < CUBE_WIDTH * CUBE_AREA; v++)
+	for (cubevol v = 0; v < CUBE_VOLUME; v++)
 		this->voxels[v] = v;
-	this->voxelcount = CUBE_WIDTH * CUBE_AREA;
+	this->voxelcount = CUBE_VOLUME;
+
+	//perform in-place shuffle to save memory
+	// https://www.geeksforgeeks.org/shuffle-a-given-array-using-fisher-yates-shuffle-algorithm/
+
+	for (cubevol i = CUBE_VOLUME - 1; i > 0; i--)
+	{
+		cubevol j = rand() % (i + 1);
+
+		cubevol tmp = this->voxels[i];
+		this->voxels[i] = this->voxels[j];
+		this->voxels[j] = tmp;
+	}
 #else
 	this->levelsz = CUBE_WIDTH;
 
@@ -27,45 +39,16 @@ VoxelList::VoxelList()
 #endif
 }
 
-void VoxelList::randomize()
-{
-#if VL_LINEAR
-	//perform in-place shuffle to save memory
-	// https://www.geeksforgeeks.org/shuffle-a-given-array-using-fisher-yates-shuffle-algorithm/
-
-	for (cubevol i = CUBE_WIDTH * CUBE_AREA - 1; i > 0; i--)
-	{
-		cubevol j = rand() % (i + 1);
-
-		cubevol tmp = this->voxels[i];
-		this->voxels[i] = this->voxels[j];
-		this->voxels[j] = tmp;
-	}
-#else
-	#warning Not implemented for CUBE_WIDTH >= 16
-#endif
-}
-
-//pops a random voxel from the list of all voxels, non-replacement
+//pops a random voxel from the list of all voxels, without replacement
 //returns (x << 16) | (y << 8) | z
 uint32_t VoxelList::pop_random_voxel()
 {
-#if VL_LINEAR
-	static bool calledRandom = false;
-	if(!calledRandom)
-	{
-		this->randomize();
-		calledRandom = true;
-	}
-
 	if(this->isempty())
 		return -1;
 
+#if VL_LINEAR
 	return Cubeframe::vox_to_xyz(this->voxels[--this->voxelcount]);
 #else
-	if(this->isempty())
-		return -1;
-
 	uint8_t yidx = rand() % this->levelsz;
 	cubecol cidx = rand() % this->colsz[yidx];
 
