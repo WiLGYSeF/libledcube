@@ -103,6 +103,18 @@ def decompress_tostr(data, newline=False):
 
 	return r
 
+helpstring = '''
+Usage: compress-charmap.py [options] [data]
+Charmap compressor for libledcube.
+
+  -h, --help                  shows this help menu
+  -c, --compress              compress mode
+  -d, --decompress [width]    decompress mode
+  -o, --led-on [char]         the led on char (default '#')
+  -f, --led-off [char]        the led off char (default '.')
+  -n, --newline               output decompressed on newline
+'''
+
 if __name__ == "__main__":
 	compressmode = True
 	width = -1
@@ -114,7 +126,10 @@ if __name__ == "__main__":
 
 	while i < len(sys.argv):
 		arg = sys.argv[i]
-		if arg == "--compress" or arg == "-c":
+		if arg == "--help" or arg == "-h":
+			print(helpstring)
+			exit(0)
+		elif arg == "--compress" or arg == "-c":
 			compressmode = True
 		elif arg == "--decompress" or arg == "-d":
 			if i == len(sys.argv) - 1:
@@ -146,7 +161,8 @@ if __name__ == "__main__":
 		i += 1
 
 	if data is None:
-		raise ValueError("no data passed")
+		print(helpstring)
+		exit(0)
 
 	if compressmode:
 		ret = compress_str(data, led_on, led_off)
