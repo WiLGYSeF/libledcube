@@ -5,8 +5,8 @@
 #ifdef ARDUINO
 	#include <SPI.h>
 
-	#ifdef DIGITALWRITE_SLOW
-		#define digitalWriteFast(P, V) digitalWrite((P), (V))
+	#ifdef DIGITALWRITE_FAST
+		#define digitalWrite(P, V) digitalWriteFast((P), (V))
 	#endif
 #else
 	#include <stdio.h>
@@ -323,23 +323,23 @@ void Cubeframe::rotate_plane(cubelvl plane, uint8_t times)
 #ifdef ARDUINO
 static void shiftout_level(const cubelvl level)
 {
-	digitalWriteFast(_PLATCH, LOW);
+	digitalWrite(_PLATCH, LOW);
 
-#ifdef USE_SPI
+#ifdef USE_SPI_SHIFTOUT
 	for (uint8_t b = 0; b < CUBELVL_SIZE; b++)
 		SPI.transfer(level[b]);
-#else //USE_SPI
-	digitalWriteFast(_PCLOCK, LOW);
+#else //USE_SPI_SHIFTOUT
+	digitalWrite(_PCLOCK, LOW);
 
 	for (uint16_t i = 0; i < CUBE_AREA; i++)
 	{
-		digitalWriteFast(_PDATA, !!(level[i >> 3] & (1 << (i & 7))));
-		digitalWriteFast(_PCLOCK, HIGH);
-		digitalWriteFast(_PCLOCK, LOW);
+		digitalWrite(_PDATA, !!(level[i >> 3] & (1 << (i & 7))));
+		digitalWrite(_PCLOCK, HIGH);
+		digitalWrite(_PCLOCK, LOW);
 	}
-#endif //else USE_SPI
+#endif //else USE_SPI_SHIFTOUT
 
-	digitalWriteFast(_PLATCH, HIGH);
+	digitalWrite(_PLATCH, HIGH);
 }
 #endif //def ARDUINO
 
@@ -511,7 +511,7 @@ void Cubeframe::print_frame() const
 
 void setup_SPI()
 {
-#if defined(ARDUINO) && defined(USE_SPI)
+#if defined(ARDUINO) && defined(USE_SPI_SHIFTOUT)
 	SPI.begin();
 	SPI.beginTransaction(SPISettings(16000000, LSBFIRST, SPI_MODE0));
 #endif

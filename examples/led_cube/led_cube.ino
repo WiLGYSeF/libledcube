@@ -20,17 +20,17 @@
 
 using namespace ledcube;
 
-struct animation {
-	Cubeframe *frames;
-	size_t framecount;
-};
-
 const uint8_t statPins[] = {
 	_PSTAT0,
 	_PSTAT1,
 	_PSTAT2,
 	_PSTAT3,
 	_PSTAT4
+};
+
+struct animation {
+	Cubeframe *frames;
+	size_t framecount;
 };
 
 uint8_t cur_animation = 0;
@@ -42,6 +42,7 @@ struct animation *animlist[2] = {
 	&anim0, &anim1
 };
 
+//interrupt variables
 volatile uint32_t lastButtonPress = 0;
 
 void setup()
@@ -66,7 +67,7 @@ void setup()
 	pinMode(_PSTAT3, OUTPUT);
 	pinMode(_PSTAT4, OUTPUT);
 
-#ifdef USE_SPI
+#ifdef USE_SPI_SHIFTOUT
 	setup_SPI();
 #endif
 
@@ -87,6 +88,7 @@ void setup()
 	for (uint8_t i = 0;  i < STATCOUNT; i++)
 		digitalWrite(statPins[i], (ca & (1 << i)) ? HIGH : LOW);
 
+	//set up interrupt for animaition iteration button
 	attachInterrupt(digitalPinToInterrupt(_PANIMITER), button_ISR, CHANGE);
 
 	srand(analogRead(_PRAND1));
@@ -97,6 +99,8 @@ void setup()
 	anim1.frames = new Cubeframe[3];
 	if(anim1.frames)
 	{
+		//manually build a three-frame character map animation
+
 		anim1.framecount = 3;
 
 		charmap::buildframe(anim1.frames[0], charmap::_chm_heart, 1000);
@@ -116,6 +120,8 @@ void loop()
 {
 	if(g_patternKillFlag)
 	{
+		//the interrupt button was pressed, change the running animation
+
 		cur_animation = (cur_animation + 1) % ANIMATIONS;
 
 		uint8_t ca = cur_animation + 1;
@@ -190,6 +196,8 @@ void button_ISR()
 	}else
 	{
 		//pressed
+
+		//only count the press if it was after a short delay to prevent switching too fast
 		if(millis() - lastButtonPress > 750)
 		{
 			g_patternKillFlag = 1;

@@ -5,11 +5,14 @@
 	#include <Arduino.h>
 
 	//put defines for compiling with arduino here
+
 	#define CUBE_WIDTH 5
 	#define CHARMAP_COMPRESS
-	//#define DIGITALWRITE_SLOW
+	//#define DIGITALWRITE_FAST
+	//#define CUBE_CURFRAME
 	#define PATTERN_KILLFLAG
 	#define USE_PROGMEM
+	//#define USE_SPI_SHIFTOUT
 #endif
 
 #ifndef CUBE_WIDTH
