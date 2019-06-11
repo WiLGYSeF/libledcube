@@ -1,19 +1,19 @@
 CC := g++
-CFLAGS := -Wall -Wextra -Wcast-align -Wfloat-equal -Wpointer-arith -Wshadow -Wundef -O2 -fstack-protector -DCUBE_WIDTH=5 -DCHARMAP_COMPRESS
+CFLAGS := -Wall -Wextra -Wcast-align -Wfloat-equal -Wpointer-arith -Wundef -O2 -fstack-protector
 LIBS :=
 
 LIBNAME := ledcube
 LIBFILE := lib$(LIBNAME).a
 
 ZIP := zip
-ZIPFILE := libledcube.zip
+ZIPFILE := lib$(LIBNAME).zip
 
 ARDUINOLIB := $(HOME)/Arduino/libraries
 
 SOURCEDIR := .
 
-SOURCES := $(shell find $(SOURCEDIR) -name '*.cpp')
-HEADERS := $(shell find $(SOURCEDIR) -name '*.h')
+SOURCES := $(shell find $(SOURCEDIR) -name '*.cpp' -and -not -path './examples/*')
+HEADERS := $(shell find $(SOURCEDIR) -name '*.h' -and -not -path './examples/*')
 OBJECTS := $(patsubst %.cpp, %.o, $(SOURCES))
 
 .PHONY: all zip install uninstall clean
